@@ -857,10 +857,10 @@ const Navbar = ({ activePage, setActivePage, cartQuantity, onCartClick }: { acti
   ];
 
   return (
-    <nav className="h-14 sticky top-0 z-50 bg-white border-b border-gray-100 px-6 flex items-center justify-between shadow-sm">
+    <nav className="h-16 sticky top-0 z-50 bg-white border-b border-gray-100 px-4 md:px-6 flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-2">
-        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden">
-          <Menu className="w-5 h-5 text-brand-dark" />
+        <button id="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 -ml-2">
+          <Menu className="w-6 h-6 text-brand-dark" />
         </button>
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActivePage('home')}>
           <img 
@@ -955,7 +955,7 @@ const HeroSection = ({ onCtaClick }: { onCtaClick: () => void }) => {
         <motion.h1 
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          className="text-5xl md:text-7xl font-black text-brand-dark leading-tight mb-2 uppercase"
+          className="text-4xl md:text-7xl font-black text-brand-dark leading-tight mb-2 uppercase"
         >
           {t.hero.title.split(' ')[0]}<br />{t.hero.title.split(' ')[1]}
         </motion.h1>
@@ -963,15 +963,16 @@ const HeroSection = ({ onCtaClick }: { onCtaClick: () => void }) => {
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl text-gray-700 italic font-medium"
+          className="text-base md:text-xl text-gray-700 italic font-medium"
         >
           {t.hero.subtitle}
         </motion.p>
         <motion.button 
+          id="hero-cta-button"
           onClick={onCtaClick}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="mt-8 border-2 border-brand-dark text-brand-dark w-max px-10 py-3 font-bold uppercase tracking-widest text-[11px] hover:bg-black hover:text-white transition-all"
+          className="mt-8 border-2 border-brand-dark text-brand-dark w-full md:w-max px-10 py-4 font-bold uppercase tracking-widest text-[11px] hover:bg-black hover:text-white transition-all shadow-lg md:shadow-none"
         >
           {t.hero.cta}
         </motion.button>
@@ -987,19 +988,22 @@ const HeroSection = ({ onCtaClick }: { onCtaClick: () => void }) => {
 const BenefitsSection = () => {
   const { t } = useLanguage();
   return (
-    <section className="py-16 px-6 max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-8 items-center border-b border-gray-100 pb-12">
-          <div className="w-full md:w-1/3 aspect-square bg-gray-50 flex items-center justify-center rounded-lg border border-gray-100 p-4">
-            <img src={IMAGES.productHero} alt="WellUp Cintura" className="max-h-full" />
+    <section id="benefits" className="py-16 px-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-10 items-center border-b border-gray-100 pb-16">
+          <div className="w-full md:w-1/3 aspect-square bg-gray-50 flex items-center justify-center rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <img src={IMAGES.productHero} alt="WellUp Cintura" className="max-h-full object-contain" />
           </div>
-          <div className="flex-1 space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-wider text-brand-dark">{t.benefits.title}</h2>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xl">
+          <div className="flex-1 space-y-6">
+            <h2 className="text-base md:text-lg font-black uppercase tracking-wider text-brand-dark">{t.benefits.title}</h2>
+            <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-xl">
               {t.benefits.desc}
             </p>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-[11px] font-bold uppercase tracking-tight text-gray-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-xs md:text-sm font-bold uppercase tracking-tight text-gray-700">
               {t.benefits.list.map((item, i) => (
-                <div key={i} className="flex items-center gap-2">✅ <span className="opacity-80">{item}</span></div>
+                <div key={i} className="flex items-center gap-3">
+                  <span className="text-brand-green">✅</span> 
+                  <span className="opacity-90">{item}</span>
+                </div>
               ))}
             </div>
           </div>
@@ -1161,72 +1165,74 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
         <div className="flex flex-col">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-3xl font-black text-brand-blue uppercase leading-none">WellUp™ Cintura</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-brand-blue uppercase leading-none">WellUp™ Cintura</h2>
               <div className="flex items-center gap-2 mt-2">
-                <div className="text-orange-400 text-xs">⭐⭐⭐⭐⭐</div>
-                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-tighter">15 Recensioni</span>
+                <div className="text-orange-400 text-sm">⭐⭐⭐⭐⭐</div>
+                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-tighter">{t.reviews.count}</span>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-gray-400 line-through text-sm">€119,99</div>
-              <div className="text-2xl font-black text-brand-dark leading-tight">€79,95</div>
-              <div className="bg-brand-green/10 text-brand-green text-[10px] font-bold px-2 py-0.5 rounded border border-brand-green/30 mt-1 uppercase">
-                SAVE €40,04
+              <div className="text-gray-400 line-through text-xs md:text-sm">€119,99</div>
+              <div className="text-xl md:text-2xl font-black text-brand-dark leading-tight">€79,95</div>
+              <div className="bg-brand-green/10 text-brand-green text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded border border-brand-green/30 mt-1 uppercase">
+                {t.order.save} €40,04
               </div>
             </div>
           </div>
 
-          <div className="p-5 border-2 border-brand-blue/30 bg-blue-50/20 rounded-xl space-y-4">
-            <p className="text-[11px] font-bold text-brand-blue uppercase text-center leading-tight">
+          <div className="p-4 md:p-5 border-2 border-brand-blue/30 bg-blue-50/20 rounded-xl space-y-4">
+            <p className="text-xs font-bold text-brand-blue uppercase text-center leading-tight">
               {t.order.formTitle}
             </p>
             
-            <form id="order-form" onSubmit={handleSubmit} className="space-y-3">
+            <form id="order-form" onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-3 pb-2">
                 <motion.button 
+                  id="add-to-cart-button"
                   type="button"
                   onClick={() => onAddToCart(quantity)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="col-span-2 py-4 bg-brand-blue text-white font-black rounded-lg uppercase tracking-widest text-[10px] shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="col-span-2 py-5 bg-brand-blue text-white font-black rounded-lg uppercase tracking-widest text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-5 h-5" />
                   {t.order.addToCart}
                 </motion.button>
               </div>
 
-              <div className="relative py-4">
+              <div className="relative py-2">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-brand-blue/10"></div></div>
-                <div className="relative flex justify-center text-[9px] uppercase font-black text-brand-blue bg-blue-50/50 px-2 w-max mx-auto">{t.order.orOrder}</div>
+                <div className="relative flex justify-center text-[10px] uppercase font-black text-brand-blue bg-blue-50/50 px-2 w-max mx-auto">{t.order.orOrder}</div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder={t.order.name} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.nome} onChange={e => setFormData({...formData, nome: e.target.value})} />
-                <input type="tel" placeholder={t.order.tel} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.tel} onChange={e => setFormData({...formData, tel: e.target.value})} />
-                <input type="text" placeholder={t.order.addr} className="col-span-2 w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.ind} onChange={e => setFormData({...formData, ind: e.target.value})} />
-                <input type="text" placeholder={t.order.city} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.citta} onChange={e => setFormData({...formData, citta: e.target.value})} />
-                <input type="text" placeholder={t.order.prov} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.prov} onChange={e => setFormData({...formData, prov: e.target.value})} />
-                <input type="text" placeholder={t.order.cap} className="col-span-2 w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.cap} onChange={e => setFormData({...formData, cap: e.target.value})} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" placeholder={t.order.name} className="w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.nome} onChange={e => setFormData({...formData, nome: e.target.value})} />
+                <input type="tel" placeholder={t.order.tel} className="w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.tel} onChange={e => setFormData({...formData, tel: e.target.value})} />
+                <input type="text" placeholder={t.order.addr} className="md:col-span-2 w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.ind} onChange={e => setFormData({...formData, ind: e.target.value})} />
+                <input type="text" placeholder={t.order.city} className="w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.citta} onChange={e => setFormData({...formData, citta: e.target.value})} />
+                <input type="text" placeholder={t.order.prov} className="w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.prov} onChange={e => setFormData({...formData, prov: e.target.value})} />
+                <input type="text" placeholder={t.order.cap} className="md:col-span-2 w-full text-base p-4 bg-white border border-gray-300 rounded-xl focus:border-brand-blue outline-none shadow-sm" required value={formData.cap} onChange={e => setFormData({...formData, cap: e.target.value})} />
               </div>
 
-              <div className="flex items-center justify-between py-2 border-t border-brand-blue/10">
-                <span className="text-[10px] font-black uppercase text-brand-blue">{t.order.qty}</span>
-                <div className="flex items-center gap-4 bg-white border border-gray-200 rounded-lg p-1">
-                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-1 hover:bg-gray-50 rounded"><Minus className="w-3 h-3" /></button>
-                  <span className="text-xs font-bold w-4 text-center">{quantity}</span>
-                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="p-1 hover:bg-gray-50 rounded"><Plus className="w-3 h-3" /></button>
+              <div className="flex items-center justify-between py-4 border-t border-brand-blue/10">
+                <span className="text-xs font-black uppercase text-brand-blue">{t.order.qty}</span>
+                <div className="flex items-center gap-6 bg-white border border-gray-200 rounded-xl p-2">
+                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 hover:bg-gray-50 rounded"><Minus className="w-4 h-4" /></button>
+                  <span className="text-base font-bold w-6 text-center">{quantity}</span>
+                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="p-2 hover:bg-gray-50 rounded"><Plus className="w-4 h-4" /></button>
                 </div>
               </div>
 
               <motion.button 
+                id="submit-order-button"
                 disabled={isSubmitting}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-4 text-white font-black rounded-lg shadow-lg hover:shadow-xl transition-all uppercase tracking-wide text-xs flex items-center justify-center gap-3 ${isSubmitting ? 'bg-gray-400' : 'bg-brand-green'}`}
+                className={`w-full py-5 text-white font-black rounded-xl shadow-xl hover:shadow-2xl transition-all uppercase tracking-widest text-sm flex items-center justify-center gap-3 ${isSubmitting ? 'bg-gray-400' : 'bg-brand-green'}`}
               >
                 {isSubmitting ? (
                   <>
-                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}><ShoppingBag className="w-4 h-4" /></motion.div>
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}><ShoppingBag className="w-5 h-5" /></motion.div>
                     {t.order.processing}
                   </>
                 ) : (
@@ -1295,21 +1301,21 @@ const UseCaseTabs = () => {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-2 items-center gap-12 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+      <div className="grid md:grid-cols-2 items-center gap-12 bg-white p-6 md:p-12 rounded-3xl shadow-sm border border-gray-100">
         <motion.div 
           key={activeTab}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="relative group cursor-zoom-in"
         >
-          <img src={IMAGES.useCasePain} alt="Dolore" className="rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700" />
+          <img src={IMAGES.useCasePain} alt="Dolore" className="rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700 w-full" />
           <div className="absolute top-4 left-4 bg-black/20 p-2 rounded-full backdrop-blur-sm"><Search className="w-5 h-5 text-white" /></div>
         </motion.div>
         <motion.div 
            key={`${activeTab}-text`}
            initial={{ opacity: 0, x: 20 }}
            animate={{ opacity: 1, x: 0 }}
-           className="text-gray-500 text-xl font-light italic"
+           className="text-gray-500 text-lg md:text-xl font-light italic"
         >
           {activeTab === tabs[0] ? t.useCases.sciaticaText : t.useCases.defaultText}
         </motion.div>
@@ -1364,26 +1370,26 @@ const FeaturesBanner = () => {
 const StatsSection = () => {
   const { t } = useLanguage();
   const StatsRing = ({ percentage, text, colorClass }: { percentage: number, text: string, colorClass: string }) => (
-    <div className="flex items-center gap-4">
-      <div className={`w-14 h-14 rounded-full border-4 ${colorClass} flex items-center justify-center text-sm font-black bg-white flex-shrink-0`}>
+    <div className="flex items-center gap-6 p-4 bg-white md:bg-transparent rounded-2xl shadow-sm md:shadow-none border md:border-0 border-gray-100">
+      <div className={`w-16 h-16 rounded-full border-[6px] ${colorClass} flex items-center justify-center text-base font-black bg-white flex-shrink-0 shadow-sm`}>
         {percentage}%
       </div>
-      <p className="text-[11px] leading-tight font-semibold text-gray-700">{text}</p>
+      <p className="text-xs md:text-sm leading-tight font-semibold text-gray-700">{text}</p>
     </div>
   );
 
   return (
-    <section className="bg-gray-50 border-t border-gray-200 py-10 px-6">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-xl font-black text-brand-dark mb-10 text-center uppercase tracking-widest">
+    <section id="stats" className="bg-gray-50 border-t border-gray-200 py-16 px-6">
+      <div className="max-w-7xl mx-auto text-center">
+        <h2 className="text-2xl font-black text-brand-dark mb-12 uppercase tracking-widest leading-tight">
           {t.stats.title}
         </h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 text-left">
           <StatsRing percentage={95} colorClass="border-brand-blue text-brand-blue" text={t.stats.s1} />
           <StatsRing percentage={90} colorClass="border-brand-green text-brand-green" text={t.stats.s2} />
           <StatsRing percentage={75} colorClass="border-orange-400 text-orange-400" text={t.stats.s3} />
         </div>
-        <p className="text-center text-[9px] text-gray-300 mt-10 italic uppercase tracking-widest">Caption about the results and/or link for their proof.</p>
+        <p className="text-[10px] text-gray-300 mt-12 italic uppercase tracking-widest">Caption about the results and/or link for their proof.</p>
       </div>
     </section>
   );
@@ -1395,21 +1401,21 @@ const FAQSection = () => {
   const faqs = t.faq.items;
 
   return (
-    <section className="bg-brand-blue py-16 px-6">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl font-black text-white text-center mb-10 uppercase tracking-tighter">{t.faq.title}</h2>
-        <div className="space-y-2">
+    <section id="faq" className="bg-brand-blue py-20 px-6">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-4xl font-black text-white text-center mb-12 uppercase tracking-tighter">{t.faq.title}</h2>
+        <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div key={i} className="border-b border-white/10 pb-2">
+            <div key={i} className="border-b border-white/10 pb-4">
               <button 
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex justify-between items-center text-left py-3 text-[13px] text-white font-bold tracking-tight hover:opacity-80 transition-opacity"
+                className="w-full flex justify-between items-center text-left py-4 text-base text-white font-bold tracking-tight hover:opacity-80 transition-opacity"
               >
-                <span className="flex items-center gap-3">
-                  <div className="bg-white/10 p-1 rounded-full"><Plus className={`w-3 h-3 transition-transform ${openIndex === i ? 'rotate-45' : ''}`} /></div>
+                <span className="flex items-center gap-4">
+                  <div className="bg-white/10 p-2 rounded-full"><Plus className={`w-4 h-4 transition-transform ${openIndex === i ? 'rotate-45' : ''}`} /></div>
                   {faq.q}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openIndex === i ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-5 h-5 transition-transform ${openIndex === i ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {openIndex === i && (
@@ -1417,7 +1423,7 @@ const FAQSection = () => {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden text-white/60 text-[11px] leading-snug italic pb-2"
+                    className="overflow-hidden text-white/70 text-sm leading-relaxed italic pb-4 pl-14"
                   >
                     {faq.a}
                   </motion.div>
@@ -1466,26 +1472,27 @@ const AboutUs = () => {
   const { t } = useLanguage();
   return (
     <motion.section 
+      id="about"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }}
-      className="py-24 px-6 max-w-4xl mx-auto"
+      className="py-16 md:py-24 px-6 max-w-4xl mx-auto"
     >
-      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.aboutS.title}</h2>
-      <div className="space-y-8 text-gray-700 leading-relaxed">
-        <p className="text-lg italic font-medium border-l-4 border-brand-blue pl-6 py-2">
+      <h2 className="text-3xl md:text-5xl font-black text-brand-blue uppercase mb-8 md:mb-12 tracking-tight">{t.aboutS.title}</h2>
+      <div className="space-y-8 text-gray-700 leading-relaxed text-sm md:text-base">
+        <p className="text-base md:text-lg italic font-medium border-l-4 border-brand-blue pl-6 py-2">
           {t.aboutS.mission}
         </p>
-        <div className="grid md:grid-cols-2 gap-12 pt-8">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 pt-4 md:pt-8">
           <div className="space-y-4">
             <h3 className="text-xs font-black uppercase tracking-widest text-brand-blue">{t.aboutS.historyTitle}</h3>
-            <p className="text-[13px]">{t.aboutS.history}</p>
+            <p className="text-sm">{t.aboutS.history}</p>
           </div>
           <div className="space-y-4">
             <h3 className="text-xs font-black uppercase tracking-widest text-brand-blue">{t.aboutS.whyWellupTitle}</h3>
-            <p className="text-[13px]">{t.aboutS.whyWellup}</p>
+            <p className="text-sm">{t.aboutS.whyWellup}</p>
           </div>
         </div>
-        <div className="bg-gray-50 p-8 rounded-2xl flex items-center gap-8 mt-12">
+        <div className="bg-gray-50 p-6 md:p-8 rounded-2xl flex items-center gap-6 md:gap-8 mt-12">
           <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
             <Check className="w-10 h-10 text-brand-blue" />
           </div>
@@ -1503,34 +1510,35 @@ const PaymentMethod = () => {
   const { t } = useLanguage();
   return (
     <motion.section 
+      id="payment-info"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }}
-      className="py-24 px-6 max-w-4xl mx-auto"
+      className="py-16 md:py-24 px-6 max-w-4xl mx-auto"
     >
-      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.paymentDetailed.title}</h2>
-      <div className="grid md:grid-cols-2 gap-12">
-        <div className="bg-brand-blue text-white p-10 rounded-3xl space-y-6">
+      <h2 className="text-3xl md:text-5xl font-black text-brand-blue uppercase mb-8 md:mb-12 tracking-tight">{t.paymentDetailed.title}</h2>
+      <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl space-y-6">
           <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center">
             <Truck className="w-8 h-8 text-white" />
           </div>
-          <h3 className="text-2xl font-bold italic">{t.paymentDetailed.codTitle}</h3>
-          <p className="text-sm text-white/70 leading-relaxed font-medium">
+          <h3 className="text-xl md:text-2xl font-bold italic">{t.paymentDetailed.codTitle}</h3>
+          <p className="text-sm text-white/70 leading-relaxed">
             {t.paymentDetailed.codDesc}
           </p>
-          <ul className="space-y-3 text-xs font-bold uppercase tracking-widest">
+          <ul className="space-y-4 text-xs font-bold uppercase tracking-widest">
             {t.paymentDetailed.codList.map((item: string, i: number) => (
               <li key={i} className="flex items-center gap-3">✅ {item}</li>
             ))}
           </ul>
         </div>
         <div className="space-y-8 flex flex-col justify-center">
-          <div className="space-y-2">
-            <h4 className="text-xs font-black uppercase text-brand-blue">{t.paymentDetailed.howTitle}</h4>
-            <p className="text-[13px] text-gray-600 leading-relaxed">{t.paymentDetailed.howDesc}</p>
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase text-brand-blue tracking-widest">{t.paymentDetailed.howTitle}</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">{t.paymentDetailed.howDesc}</p>
           </div>
-          <div className="space-y-2">
-            <h4 className="text-xs font-black uppercase text-brand-blue">{t.paymentDetailed.safetyTitle}</h4>
-            <p className="text-[13px] text-gray-600 leading-relaxed">{t.paymentDetailed.safetyDesc}</p>
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase text-brand-blue tracking-widest">{t.paymentDetailed.safetyTitle}</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">{t.paymentDetailed.safetyDesc}</p>
           </div>
         </div>
       </div>
@@ -1542,37 +1550,38 @@ const ContactUs = () => {
   const { t } = useLanguage();
   return (
     <motion.section 
+      id="contact"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }}
-      className="py-24 px-6 max-w-4xl mx-auto"
+      className="py-16 md:py-24 px-6 max-w-4xl mx-auto"
     >
-      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.contactDetailed.title}</h2>
+      <h2 className="text-3xl md:text-5xl font-black text-brand-blue uppercase mb-8 md:mb-12 tracking-tight">{t.contactDetailed.title}</h2>
       <div className="grid md:grid-cols-3 gap-12">
-        <div className="md:col-span-1 space-y-8">
+        <div className="md:col-span-1 space-y-10">
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.email}</h4>
-            <p className="text-sm font-bold text-brand-dark">supporto@wellup.shop</p>
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#28A745] mb-3">{t.contactDetailed.email}</h4>
+            <p className="text-sm md:text-base font-bold text-brand-dark">supporto@wellup.shop</p>
           </div>
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.hours}</h4>
-            <p className="text-sm font-bold text-brand-dark">{t.contactDetailed.hoursVal}</p>
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#28A745] mb-3">{t.contactDetailed.hours}</h4>
+            <p className="text-sm md:text-base font-bold text-brand-dark">{t.contactDetailed.hoursVal}</p>
           </div>
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.social}</h4>
-            <div className="flex gap-4 mt-2">
-              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><User className="w-4 h-4 text-brand-blue" /></div>
-              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><User className="w-4 h-4 text-brand-blue" /></div>
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#28A745] mb-3">{t.contactDetailed.social}</h4>
+            <div className="flex gap-4 mt-3">
+              <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-brand-blue hover:text-white transition-all"><User className="w-5 h-5" /></div>
+              <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-brand-blue hover:text-white transition-all"><User className="w-5 h-5" /></div>
             </div>
           </div>
         </div>
         <div className="md:col-span-2">
-          <form className="space-y-4 bg-gray-50 p-8 rounded-3xl">
-            <div className="grid grid-cols-2 gap-4">
-              <input type="text" placeholder={t.contactDetailed.form.name} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
-              <input type="email" placeholder={t.contactDetailed.form.email} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
+          <form className="space-y-4 bg-gray-50 p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input type="text" placeholder={t.contactDetailed.form.name} className="w-full text-base p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
+              <input type="email" placeholder={t.contactDetailed.form.email} className="w-full text-base p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
             </div>
-            <textarea placeholder={t.contactDetailed.form.help} rows={4} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all resize-none"></textarea>
-            <button className="w-full py-4 bg-brand-dark text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-brand-blue transition-all">{t.contactDetailed.form.submit}</button>
+            <textarea placeholder={t.contactDetailed.form.help} rows={5} className="w-full text-base p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all resize-none"></textarea>
+            <button className="w-full py-5 bg-brand-dark text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand-blue transition-all shadow-lg">{t.contactDetailed.form.submit}</button>
           </form>
         </div>
       </div>
@@ -1750,12 +1759,12 @@ const Footer = ({ setActivePage }: { setActivePage: (p: string) => void }) => {
             />
             <span className="text-xl font-bold text-white tracking-widest uppercase">Wellup</span>
           </div>
-          <p className="text-white/50 text-[10px] tracking-tight">© 2026 WellUp™ Cintura. {t.footerDetailed.rights}</p>
+          <p className="text-white/50 text-xs tracking-tight">© 2026 WellUp™ Cintura. {t.footerDetailed.rights}</p>
         </div>
-        <div className="flex gap-8 text-white/70 text-xs font-medium uppercase tracking-widest">
-          <button onClick={() => setActivePage('privacy')} className="hover:text-white transition-colors">{t.footerDetailed.privacy}</button>
-          <button onClick={() => setActivePage('termini')} className="hover:text-white transition-colors">{t.footerDetailed.terms}</button>
-          <button onClick={() => setActivePage('contact')} className="hover:text-white transition-colors">{t.footerDetailed.contact}</button>
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/70 text-xs font-medium uppercase tracking-widest">
+          <button id="footer-privacy-link" onClick={() => setActivePage('privacy')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.privacy}</button>
+          <button id="footer-terms-link" onClick={() => setActivePage('termini')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.terms}</button>
+          <button id="footer-contact-link" onClick={() => setActivePage('contact')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.contact}</button>
         </div>
       </div>
     </footer>
