@@ -949,33 +949,38 @@ const TrustTicker = () => {
 const HeroSection = ({ onCtaClick }: { onCtaClick: () => void }) => {
   const { t } = useLanguage();
   return (
-    <section className="relative h-[65vh] flex overflow-hidden border-b border-gray-100">
-      <div className="w-full md:w-1/2 relative bg-gray-50 flex flex-col justify-center px-10 md:px-20 py-10 z-10">
+    <section className="relative min-h-[60vh] md:h-[65vh] flex overflow-hidden border-b border-gray-100">
+      <div className="w-full md:w-1/2 relative bg-gray-50 flex flex-col justify-center px-6 md:px-20 py-16 md:py-10 z-10 text-center md:text-left">
         <div className="absolute inset-0 bg-cover bg-center opacity-10 md:hidden" style={{ backgroundImage: `url(${IMAGES.hero})` }}></div>
-        <motion.h1 
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          className="text-4xl md:text-7xl font-black text-brand-dark leading-tight mb-2 uppercase"
-        >
-          {t.hero.title.split(' ')[0]}<br />{t.hero.title.split(' ')[1]}
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-base md:text-xl text-gray-700 italic font-medium"
-        >
-          {t.hero.subtitle}
-        </motion.p>
-        <motion.button 
-          id="hero-cta-button"
-          onClick={onCtaClick}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-8 border-2 border-brand-dark text-brand-dark w-full md:w-max px-10 py-4 font-bold uppercase tracking-widest text-[11px] hover:bg-black hover:text-white transition-all shadow-lg md:shadow-none"
-        >
-          {t.hero.cta}
-        </motion.button>
+        <div className="relative z-20 space-y-4">
+          <motion.h1 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="text-4xl md:text-7xl font-black text-brand-dark leading-tight uppercase"
+          >
+            {t.hero.title.split(' ')[0]}<br />{t.hero.title.split(' ')[1]}
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-base md:text-xl text-gray-700 italic font-medium"
+          >
+            {t.hero.subtitle}
+          </motion.p>
+          <motion.button 
+            id="hero-cta-button"
+            onClick={(e) => {
+              e.preventDefault();
+              onCtaClick();
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-4 md:mt-8 border-2 border-brand-dark text-brand-dark w-full md:w-max px-10 py-4 font-bold uppercase tracking-widest text-[11px] hover:bg-black hover:text-white transition-all shadow-lg active:scale-95"
+          >
+            {t.hero.cta}
+          </motion.button>
+        </div>
       </div>
       <div className="hidden md:block md:w-1/2 relative">
         <img src={IMAGES.hero} alt="Comfort Rinnovato" className="absolute inset-0 w-full h-full object-cover" />
@@ -1141,19 +1146,26 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
   };
 
   return (
-    <section id="product" className="py-12 bg-white px-6">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
+    <section id="product" className="py-8 md:py-12 bg-white px-4 md:px-6">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12">
         {/* Left: Gallery */}
         <div className="space-y-4">
-          <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center p-6">
-            <img src={gallery[activeImg].src} alt={gallery[activeImg].alt} className="w-full h-full object-contain" />
+          <div className="aspect-square bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center p-4 md:p-6 shadow-sm">
+            <motion.img 
+              key={activeImg}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              src={gallery[activeImg].src} 
+              alt={gallery[activeImg].alt} 
+              className="w-full h-full object-contain" 
+            />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 noscrollbar">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {gallery.map((img, i) => (
               <button 
                 key={i} 
                 onClick={() => setActiveImg(i)}
-                className={`w-16 h-16 rounded shadow-sm overflow-hidden border-2 transition-all flex-shrink-0 ${activeImg === i ? 'border-brand-blue' : 'border-transparent opacity-60'}`}
+                className={`w-16 h-16 md:w-20 md:h-20 flex-shrink-0 bg-gray-50 rounded-lg border-2 transition-all overflow-hidden ${activeImg === i ? 'border-brand-blue shadow-md' : 'border-transparent opacity-60'}`}
               >
                 <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
               </button>
@@ -1163,18 +1175,20 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
 
         {/* Right: Info & Form */}
         <div className="flex flex-col">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-black text-brand-blue uppercase leading-none">WellUp™ Cintura</h2>
-              <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
+            <div className="w-full">
+              <h2 className="text-3xl md:text-4xl font-black text-brand-blue uppercase leading-[1.1]">WellUp™ Cintura</h2>
+              <div className="flex items-center gap-2 mt-3">
                 <div className="text-orange-400 text-sm">⭐⭐⭐⭐⭐</div>
-                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-tighter">{t.reviews.count}</span>
+                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">{t.reviews.count}</span>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-gray-400 line-through text-xs md:text-sm">€119,99</div>
-              <div className="text-xl md:text-2xl font-black text-brand-dark leading-tight">€79,95</div>
-              <div className="bg-brand-green/10 text-brand-green text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded border border-brand-green/30 mt-1 uppercase">
+            <div className="text-left sm:text-right w-full sm:w-auto flex sm:flex-col items-center sm:items-end gap-4 sm:gap-1 pt-2 sm:pt-0">
+              <div className="flex flex-col sm:items-end">
+                <div className="text-gray-400 line-through text-xs md:text-sm italic">€119,99</div>
+                <div className="text-2xl md:text-3xl font-black text-brand-dark leading-tight">€79,95</div>
+              </div>
+              <div className="bg-brand-green/10 text-brand-green text-[10px] font-black px-3 py-1 rounded-full border border-brand-green/30 uppercase tracking-widest">
                 {t.order.save} €40,04
               </div>
             </div>
@@ -1215,11 +1229,11 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
               </div>
 
               <div className="flex items-center justify-between py-4 border-t border-brand-blue/10">
-                <span className="text-xs font-black uppercase text-brand-blue">{t.order.qty}</span>
-                <div className="flex items-center gap-6 bg-white border border-gray-200 rounded-xl p-2">
-                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 hover:bg-gray-50 rounded"><Minus className="w-4 h-4" /></button>
-                  <span className="text-base font-bold w-6 text-center">{quantity}</span>
-                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="p-2 hover:bg-gray-50 rounded"><Plus className="w-4 h-4" /></button>
+                <span className="text-xs font-black uppercase text-brand-blue tracking-[0.2em]">{t.order.qty}</span>
+                <div className="flex items-center gap-8 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm">
+                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-3 hover:bg-gray-100 rounded-xl transition-colors"><Minus className="w-5 h-5 text-brand-blue" /></button>
+                  <span className="text-xl font-bold w-6 text-center">{quantity}</span>
+                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="p-3 hover:bg-gray-100 rounded-xl transition-colors"><Plus className="w-5 h-5 text-brand-blue" /></button>
                 </div>
               </div>
 
@@ -1241,20 +1255,20 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
               </motion.button>
             </form>
 
-            <div className="flex justify-between px-2 pt-2">
+            <div className="flex justify-between px-2 pt-6 pb-2">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">🛒</div>
-                <span className="text-[9px] font-bold text-gray-400">Jun 1st</span>
+                <div className="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center text-sm mb-2 shadow-lg">🛒</div>
+                <span className="text-[9px] font-black text-gray-400 uppercase">Jun 1st</span>
               </div>
-              <div className="flex-1 h-px bg-gray-200 mt-4 mx-2"></div>
+              <div className="flex-1 h-[2px] bg-gray-100 mt-5 mx-2"></div>
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">📦</div>
-                <span className="text-[9px] font-bold text-gray-400">Jun 2nd</span>
+                <div className="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center text-sm mb-2 shadow-lg">📦</div>
+                <span className="text-[9px] font-black text-gray-400 uppercase">Jun 2nd</span>
               </div>
-              <div className="flex-1 h-px bg-gray-200 mt-4 mx-2"></div>
+              <div className="flex-1 h-[2px] bg-gray-100 mt-5 mx-2"></div>
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">🏠</div>
-                <span className="text-[9px] font-bold text-brand-blue uppercase">Consegnato</span>
+                <div className="w-10 h-10 rounded-full bg-brand-green text-white flex items-center justify-center text-sm mb-2 shadow-lg">🏠</div>
+                <span className="text-[9px] font-black text-brand-green uppercase tracking-tighter">Consegnato</span>
               </div>
             </div>
           </div>
@@ -1441,19 +1455,19 @@ const ReviewsSection = () => {
   const { t } = useLanguage();
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+      <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-8 mb-16">
         <div>
-           <div className="flex items-center gap-4 mb-2">
-            <span className="text-4xl font-bold text-brand-dark italic">5.0</span>
+           <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
+            <span className="text-4xl md:text-5xl font-black text-brand-dark italic">5.0</span>
             <div className="flex text-brand-blue">
               {[...Array(5)].map((_, i) => <Star key={i} className="w-6 h-6 fill-current" />)}
             </div>
            </div>
-           <p className="text-gray-400 font-medium uppercase text-[10px] tracking-widest">{t.reviews.count}</p>
+           <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">{t.reviews.count}</p>
         </div>
-        <div className="flex gap-4">
-          <button className="px-6 py-2 border border-brand-dark font-bold uppercase text-[10px] tracking-widest rounded-sm hover:bg-brand-dark hover:text-white transition-all">{t.reviews.write}</button>
-          <button className="p-2 border border-brand-dark rounded-sm"><Menu className="w-5 h-5" /></button>
+        <div className="flex gap-4 w-full md:w-auto">
+          <button className="flex-1 md:flex-none px-8 py-4 bg-brand-dark text-white rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-brand-blue transition-all shadow-lg active:scale-95">{t.reviews.write}</button>
+          <button className="p-4 border-2 border-gray-100 rounded-xl hover:bg-gray-50 transition-colors"><Menu className="w-5 h-5 text-brand-dark" /></button>
         </div>
       </div>
 
