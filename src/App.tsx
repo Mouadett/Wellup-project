@@ -1,0 +1,1863 @@
+import { useEffect, useState, ReactNode, FormEvent, createContext, useContext } from 'react';
+import { 
+  Check, 
+  Search, 
+  ShoppingBag, 
+  Star, 
+  User, 
+  Phone, 
+  MapPin, 
+  Building2, 
+  Navigation, 
+  Mail, 
+  Calendar,
+  Package,
+  Truck,
+  ChevronDown,
+  Menu,
+  X,
+  Plus,
+  Minus,
+  Quote,
+  Globe
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+// --- Translations ---
+const TRANSLATIONS = {
+  it: {
+    nav: {
+      home: "Home",
+      product: "WellUp™ Cintura",
+      about: "Chi siamo",
+      payment: "Metodo di pagamento",
+      contact: "Contattaci"
+    },
+    hero: {
+      title: "Comfort Rinnovato",
+      subtitle: "Trasforma Ogni Giorno in Pura Magia.",
+      cta: "Acquistare Ora"
+    },
+    ticker: {
+      shipping: "SPEDIZIONE VELOCE 72 ORE",
+      guarantee: "SODDISFATTO O RIMBORSATO",
+      easy: "ORDINE FACILE"
+    },
+    benefits: {
+      title: "Sperimenta Vantaggi Ineguagliabili",
+      desc: "L'essenza di WellUp™ Cintura risiede nei suoi vantaggi multifaccettati. Ogni aspetto della nostra cintura può portare un cambiamento trasformativo nella tua vita quotidiana attraverso una compressione mirata.",
+      list: ["Sollievo Immediato", "Design Confortevole", "Sciatica e Lombalgia", "Durabilità e Longevità"]
+    },
+    order: {
+      formTitle: "Riempi il formulario! Ti contatteremo per confermare le tue informazioni prima di spedire il prodotto 📞✅",
+      addToCart: "Aggiungi al carrello",
+      orOrder: "Oppure Ordina Direttamente",
+      name: "Nome completo",
+      tel: "Telefono",
+      addr: "Indirizzo",
+      city: "Città",
+      prov: "Provincia",
+      cap: "Codice Postale",
+      qty: "Quantità",
+      submit: "CLICCA PER COMPLETARE L'ORDINE",
+      processing: "ELABORAZIONE...",
+      delivered: "Consegnato",
+      save: "RISPARMIA"
+    },
+    announcement: [
+      "⏱ CONSEGNA IN 3 GIORNI IN TUTTA ITALIA",
+      "💳 PAGAMENTO E CONSEGNA",
+      "🚚 SPEDIZIONE GRATUITA"
+    ],
+    features: {
+      title: "\"Comfort Istantaneo e Durabilità: Cintura WellUp™\"",
+      relief: "Sollievo Immediato",
+      reliefDesc: "La cintura WellUp™ Cintura offre un rapido sollievo dal dolore, alleviando rapidamente i disagi associati a problemi come la sciatica e la lombalgia.",
+      design: "Design Confortevole",
+      designDesc: "Progettata con un design ergonomico, la cintura assicura un comfort ottimale durante l'uso quotidiano, consentendo una vestibilità piacevole e una sensazione di sollievo.",
+      sciatica: "Risolvere Problemi di Sciatica e Lombalgia",
+      sciaticaDesc: "Grazie al suo supporto lombare e alla compressione mirata, la cintura affronta efficacemente problemi come la sciatica e la lombalgia, migliorando il benessere complessivo della schiena.",
+      durability: "Durabilità e Longevità",
+      durabilityDesc: "Realizzata con materiali di alta qualità, la cintura è progettata per resistere a un utilizzo prolungato nel tempo, garantendo una durata eccezionale e una performance affidabile nel tempo."
+    },
+    stats: {
+      title: "Guarisci Come Non Mai 💗",
+      s1: "Sollievo immediato tra i pazienti con mal di schiena e sciatica.",
+      s2: "Sciatica eliminata in sole 2 settimane d'uso costante.",
+      s3: "Mal di schiena cronico risolto dopo 14 giorni di trattamento."
+    },
+    faq: {
+      title: "FAQs",
+      items: [
+        { q: "Che cos'è WellUp™ Cintura?", a: "È un supporto lombare pneumatico progettato per decomprimere la colonna vertebrale e fornire sollievo immediato dal dolore." },
+        { q: "Quanto tempo devo indossare WellUp™ Cintura per vedere i risultati?", a: "Consigliamo l'uso per 2 ore al giorno. Molti utenti avvertono benefici già dalle prime due settimane." },
+        { q: "Ci sono effetti collaterali nell'utilizzo della WellUp™ Cintura?", a: "No, è un dispositivo non invasivo. Tuttavia, consulta sempre un medico per condizioni preesistenti gravi." },
+        { q: "WellUp™ Cintura può sostituire le visite dal chiropratico o altri trattamenti?", a: "Può essere un eccellente supporto complementare, ma non deve sostituire il parere clinico specialistico." },
+        { q: "Come funziona esattamente WellUp™ Cintura?", a: "Utilizza 52 colonne d'aria che, una volta gonfiate, sollevano delicatamente la parte superiore del corpo allontanandola dal bacino." }
+      ]
+    },
+    aboutS: {
+      title: "Chi Siamo",
+      mission: "\"La nostra missione è ridefinire il benessere lombare attraverso l'innovazione tecnologica e il design ergonomico.\"",
+      historyTitle: "La Nostra Storia",
+      history: "WellUp™ nasce dall'esigenza di offrire una soluzione reale e non invasiva a chi soffre di dolori cronici alla schiena. Abbiamo collaborato con esperti di biomeccanica per creare una cintura che non fosse solo un supporto, ma un vero sistema di decompressione portatile.",
+      whyWellupTitle: "Perché WellUp?",
+      whyWellup: "A differenza dei supporti tradizionali, la WellUp™ Cintura utilizza 52 colonne d'aria dinamiche. Questo approccio ad \"alta densità\" garantisce una distribuzione uniforme del peso e una decompressione millimetrica delle vertebre.",
+      certTitle: "Certificazione di Qualità",
+      cert: "Ogni cintura WellUp™ è testata individualmente per mantenere una pressione costante di 0.2MPa per 24 ore."
+    },
+    thankYou: {
+      orderId: "Ordine",
+      thanks: "Grazie",
+      confirmed: "Il tuo ordine è confermato",
+      message: "Potresti ricevere un messaggio quando il tuo ordine è pronto. Spedizione prevista: 72 ore.",
+      summary: "Riepilogo",
+      shipping: "Spedizione",
+      free: "GRATUITA",
+      total: "Totale",
+      paymentMethod: "Metodo di Pagamento",
+      cod: "Contrassegno (Pagamento alla Consegna)",
+      backHome: "Torna alla Home"
+    },
+    useCases: {
+      tabs: ['Sciatica', 'Lavoro Sedentario', 'Lavoro Attivo'],
+      sciaticaText: "Senti il dolore della sciatica a causa della tua vecchiaia",
+      defaultText: "Supporto ottimale per le tue attività quotidiane."
+    },
+    reviews: {
+      count: "15 Recensioni",
+      write: "scrivi la tua recensione"
+    },
+    paymentDetailed: {
+      title: "Pagamento",
+      codTitle: "Contrassegno (COD)",
+      codDesc: "Per garantire la massima sicurezza ai nostri clienti, utilizziamo esclusivamente il modello di pagamento alla consegna.",
+      codList: ["Nessun pagamento anticipato", "Paghi solo quando ricevi", "Corriere SDA / GLS"],
+      howTitle: "Come Funziona?",
+      howDesc: "Una volta confermato l'ordine tramite il nostro modulo, il prodotto verrà preparato e spedito entro 24 ore. Riceverai un codice di tracking via SMS.",
+      safetyTitle: "Sicurezza dei Dati",
+      safetyDesc: "I tuoi dati sono protetti e crittografati. Li utilizziamo esclusivamente per finalizzare la consegna del tuo ordine WellUp™."
+    },
+    contactDetailed: {
+      title: "Contattaci",
+      email: "Email",
+      hours: "Orari",
+      hoursVal: "Lun - Ven: 09:00 - 18:00",
+      social: "Social",
+      form: {
+        name: "NOME",
+        email: "EMAIL",
+        help: "COME POSSIAMO AIUTARTI?",
+        submit: "Invia Messaggio"
+      }
+    },
+    privacyDetailed: {
+      title: "Privacy Policy",
+      content: "La tua privacy è importante per noi. Questa politica spiega come WellUp™ raccoglie, utilizza e protegge le tue informazioni personali quando visiti il nostro sito o effettui un ordine.",
+      s1: {
+        t: "1. Informazioni Raccolte",
+        p: "Raccogliamo solo i dati necessari per elaborare il tuo ordine e fornirti il supporto necessario: Nome, Numero di Telefono, Indirizzo di Spedizione e Codice Postale."
+      },
+      s2: {
+        t: "2. Uso dei Dati",
+        p: "I tuoi dati vengono utilizzati esclusivamente per la spedizione del prodotto e per la conferma dell'ordine tramite telefono o SMS. Non vendiamo né condividiamo i tuoi dati con terze parti per scopi di marketing."
+      },
+      s3: {
+        t: "3. Sicurezza",
+        p: "Adottiamo misure di sicurezza avanzate per proteggere i tuoi dati durante la trasmissione e la conservazione. Tutti i dati sono memorizzati in server sicuri crittografati."
+      }
+    },
+    termsDetailed: {
+      title: "Termini e Condizioni",
+      content: "Accedendo al sito WellUp™, accetti i seguenti termini e condizioni di utilizzo.",
+      s1: {
+        t: "1. Ordini e Pagamenti",
+        p: "WellUp™ opera esclusivamente tramite pagamento alla consegna (Contrassegno). L'ordine si considera finalizzato dopo la conferma telefonica da parte del nostro team."
+      },
+      s2: {
+        t: "2. Spedizione",
+        p: "La spedizione è gratuita in tutta Italia. I tempi di consegna stimati sono di 3-4 giorni lavorativi. Non siamo responsabili per ritardi causati da terzi (corrieri)."
+      },
+      s3: {
+        t: "3. Politica di Reso",
+        p: "Ai sensi della normativa vigente, hai il diritto di recedere dall'acquisto entro 14 giorni dal ricevimento della merce. Il prodotto deve essere restituito integro nel suo imballaggio originale."
+      }
+    },
+    cartDetailed: {
+      title: "Il Mio Carrello",
+      empty: "Il carrello è vuoto",
+      startShopping: "Inizia gli acquisti",
+      subtotal: "Subtotale",
+      shipping: "Spedizione",
+      free: "GRATIS",
+      total: "Totale",
+      checkout: "Vai al Checkout"
+    },
+    footerDetailed: {
+      rights: "Tutti i diritti riservati.",
+      privacy: "Privacy",
+      terms: "Termini",
+      contact: "Contattaci"
+    }
+  },
+  en: {
+    nav: {
+      home: "Home",
+      product: "WellUp™ Belt",
+      about: "About Us",
+      payment: "Payment Method",
+      contact: "Contact Us"
+    },
+    hero: {
+      title: "Renewed Comfort",
+      subtitle: "Transform Every Day into Pure Magic.",
+      cta: "Buy Now"
+    },
+    ticker: {
+      shipping: "FAST 72H SHIPPING",
+      guarantee: "MONEY BACK GUARANTEE",
+      easy: "EASY ORDERING"
+    },
+    benefits: {
+      title: "Experience Unparalleled Benefits",
+      desc: "The essence of WellUp™ Belt lies in its multifaceted benefits. Every aspect of our belt can bring a transformative change to your daily life through targeted compression.",
+      list: ["Immediate Relief", "Comfortable Design", "Sciatica & Back Pain", "Durability & Longevity"]
+    },
+    order: {
+      formTitle: "Fill out the form! We will contact you to confirm your information before shipping the product 📞✅",
+      addToCart: "Add to Cart",
+      orOrder: "Or Order Directly",
+      name: "Full Name",
+      tel: "Phone Number",
+      addr: "Address",
+      city: "City",
+      prov: "Province / State",
+      cap: "ZIP Code",
+      qty: "Quantity",
+      submit: "CLICK TO COMPLETE ORDER",
+      processing: "PROCESSING...",
+      delivered: "Delivered",
+      save: "SAVE"
+    },
+    announcement: [
+      "⏱ DELIVERY IN 3 DAYS WORLDWIDE",
+      "💳 CASH ON DELIVERY AVAILABLE",
+      "🚚 FREE SHIPPING"
+    ],
+    features: {
+      title: "\"Instant Comfort and Durability: WellUp™ Belt\"",
+      relief: "Immediate Relief",
+      reliefDesc: "The WellUp™ Belt offers rapid pain relief, quickly alleviating discomfort associated with issues like sciatica and lower back pain.",
+      design: "Comfortable Design",
+      designDesc: "Designed with an ergonomic shape, the belt ensures optimal comfort during daily use, allowing for a pleasant fit and a feeling of relief.",
+      sciatica: "Solving Sciatica and Lower Back Problems",
+      sciaticaDesc: "Thanks to its lumbar support and targeted compression, the belt effectively addresses issues like sciatica and lower back pain, improving overall back health.",
+      durability: "Durability and Longevity",
+      durabilityDesc: "Made with high-quality materials, the belt is designed to withstand prolonged use over time, ensuring exceptional durability and reliable performance."
+    },
+    stats: {
+      title: "Heal Like Never Before 💗",
+      s1: "Immediate relief among patients with back pain and sciatica.",
+      s2: "Sciatica eliminated in just 2 weeks of consistent use.",
+      s3: "Chronic back pain resolved after 14 days of treatment."
+    },
+    faq: {
+      title: "FAQs",
+      items: [
+        { q: "What is the WellUp™ Belt?", a: "It is a pneumatic lumbar support designed to decompress the spine and provide immediate pain relief." },
+        { q: "How long should I wear the WellUp™ Belt to see results?", a: "We recommend using it for 2 hours a day. Many users feel benefits within the first two weeks." },
+        { q: "Are there any side effects to using the WellUp™ Belt?", a: "No, it is a non-invasive device. However, always consult a doctor for serious pre-existing conditions." },
+        { q: "Can the WellUp™ Belt replace chiropractor visits or other treatments?", a: "It can be an excellent complementary support, but should not replace clinical specialist advice." },
+        { q: "How exactly does the WellUp™ Belt work?", a: "It uses 52 air columns that, once inflated, gently lift the upper body away from the pelvis." }
+      ]
+    },
+    aboutS: {
+      title: "About Us",
+      mission: "\"Our mission is to redefine lumbar wellness through technological innovation and ergonomic design.\"",
+      historyTitle: "Our History",
+      history: "WellUp™ was born from the need to offer a real, non-invasive solution to those suffering from chronic back pain. We collaborated with biomechanics experts to create a belt that wasn't just a support, but a true portable decompression system.",
+      whyWellupTitle: "Why WellUp?",
+      whyWellup: "Unlike traditional supports, the WellUp™ Belt uses 52 dynamic air columns. This 'high density' approach ensures uniform weight distribution and millimeter decompression of the vertebrae.",
+      certTitle: "Quality Certification",
+      cert: "Each WellUp™ belt is individually tested to maintain a constant pressure of 0.2MPa for 24 hours."
+    },
+    thankYou: {
+      orderId: "Order",
+      thanks: "Thanks",
+      confirmed: "Your order is confirmed",
+      message: "You may receive a message when your order is ready. Expected delivery: 72 hours.",
+      summary: "Summary",
+      shipping: "Shipping",
+      free: "FREE",
+      total: "Total",
+      paymentMethod: "Payment Method",
+      cod: "Cash on Delivery",
+      backHome: "Back to Home"
+    },
+    useCases: {
+      tabs: ['Sciatica', 'Sedentary Work', 'Active Work'],
+      sciaticaText: "Feel the pain of sciatica because of your age",
+      defaultText: "Optimal support for your daily activities."
+    },
+    reviews: {
+      count: "15 Reviews",
+      write: "write your review"
+    },
+    paymentDetailed: {
+      title: "Payment",
+      codTitle: "Cash on Delivery (COD)",
+      codDesc: "To ensure maximum security for our customers, we exclusively use the cash on delivery payment model.",
+      codList: ["No advance payment", "Pay only when you receive", "Express Courier"],
+      howTitle: "How It Works?",
+      howDesc: "Once the order is confirmed through our form, the product will be prepared and shipped within 24 hours. You will receive a tracking code via SMS.",
+      safetyTitle: "Data Security",
+      safetyDesc: "Your data is protected and encrypted. We use it exclusively to finalize the delivery of your WellUp™ order."
+    },
+    contactDetailed: {
+      title: "Contact Us",
+      email: "Email",
+      hours: "Hours",
+      hoursVal: "Mon - Fri: 09:00 - 18:00",
+      social: "Social",
+      form: {
+        name: "NAME",
+        email: "EMAIL",
+        help: "HOW CAN WE HELP YOU?",
+        submit: "Send Message"
+      }
+    },
+    privacyDetailed: {
+      title: "Privacy Policy",
+      content: "Your privacy is important to us. This policy explains how WellUp™ collects, uses, and protects your personal information when you visit our site or place an order.",
+      s1: {
+        t: "1. Collected Information",
+        p: "We only collect the data necessary to process your order: Name, Phone Number, Shipping Address, and ZIP Code."
+      },
+      s2: {
+        t: "2. Use of Data",
+        p: "Your data is used exclusively for shipping and order confirmation. We do not sell or share your data with third parties for marketing purposes."
+      },
+      s3: {
+        t: "3. Security",
+        p: "We adopt advanced security measures to protect your data. All data is stored on secure encrypted servers."
+      }
+    },
+    termsDetailed: {
+      title: "Terms and Conditions",
+      content: "By accessing the WellUp™ site, you accept the following terms and conditions of use.",
+      s1: {
+        t: "1. Orders and Payments",
+        p: "WellUp™ operates exclusively through cash on delivery. The order is considered finalized after phone confirmation from our team."
+      },
+      s2: {
+        t: "2. Shipping",
+        p: "Shipping is free worldwide. Estimated delivery times are 3-4 business days."
+      },
+      s3: {
+        t: "3. Return Policy",
+        p: "You have the right to withdraw from the purchase within 14 days of receiving the goods. The product must be returned intact in its original packaging."
+      }
+    },
+    cartDetailed: {
+      title: "My Cart",
+      empty: "Cart is empty",
+      startShopping: "Start Shopping",
+      subtotal: "Subtotal",
+      shipping: "Shipping",
+      free: "FREE",
+      total: "Total",
+      checkout: "Go to Checkout"
+    },
+    footerDetailed: {
+      rights: "All rights reserved.",
+      privacy: "Privacy",
+      terms: "Terms",
+      contact: "Contact Us"
+    }
+  },
+  fr: {
+    nav: {
+      home: "Accueil",
+      product: "Ceinture WellUp™",
+      about: "À propos",
+      payment: "Mode de paiement",
+      contact: "Contactez-nous"
+    },
+    hero: {
+      title: "Confort Renouvelé",
+      subtitle: "Transformez chaque jour en pure magie.",
+      cta: "Acheter maintenant"
+    },
+    ticker: {
+      shipping: "LIVRAISON RAPIDE 72H",
+      guarantee: "SATISFAIT OU REMBOURSÉ",
+      easy: "COMMANDE FACILE"
+    },
+    benefits: {
+      title: "Découvrez des avantages inégalés",
+      desc: "L'essence de la ceinture WellUp™ réside dans ses avantages multiples. Chaque aspect de notre ceinture peut apporter un changement transformateur dans votre vie quotidienne.",
+      list: ["Soulagement immédiat", "Conception confortable", "Sciatique et mal de dos", "Durabilité et longévité"]
+    },
+    order: {
+      formTitle: "Remplissez le formulaire ! Nous vous contacterons pour confirmer vos informations avant d'expédier le produit 📞✅",
+      addToCart: "Ajouter au panier",
+      orOrder: "Ou commandez directement",
+      name: "Nom complet",
+      tel: "Téléphone",
+      addr: "Adresse",
+      city: "Ville",
+      prov: "Province / État",
+      cap: "Code postal",
+      qty: "Quantité",
+      submit: "CLIQUEZ POUR TERMINER LA COMMANDE",
+      processing: "TRAITEMENT...",
+      delivered: "Livré",
+      save: "ÉCONOMISER"
+    },
+    announcement: [
+      "⏱ LIVRAISON EN 3 JOURS",
+      "💳 PAIEMENT À LA LIVRAISON",
+      "🚚 LIVRAISON GRATUITE"
+    ],
+    features: {
+      title: "\"Confort instantané et durabilité : Ceinture WellUp™\"",
+      relief: "Soulagement immédiat",
+      reliefDesc: "La ceinture WellUp™ offre un soulagement rapide de la douleur, atténuant rapidement l'inconfort associé à des problèmes tels que la sciatique et les lombalgies.",
+      design: "Conception confortable",
+      designDesc: "Conçue avec une forme ergonomique, la ceinture assure un confort optimal lors d'une utilisation quotidienne, permettant un ajustement agréable et une sensation de soulagement.",
+      sciatica: "Résoudre les problèmes de sciatique et de zone lombaire",
+      sciaticaDesc: "Grâce à son soutien lombaire et à sa compression ciblée, la ceinture s'attaque efficacement aux problèmes tels que la sciatique et les lombalgies, améliorant ainsi la santé globale du dos.",
+      durability: "Durabilité et longévité",
+      durabilityDesc: "Fabriquée avec des matériaux de haute qualité, la ceinture est conçue pour résister à une utilisation prolongée dans le temps, garantissant une durabilité exceptionnelle et des performances fiables."
+    },
+    stats: {
+      title: "Guérissez comme jamais auparavant 💗",
+      s1: "Soulagement immédiat chez les patients souffrant de maux de dos et de sciatique.",
+      s2: "Sciatique éliminée en seulement 2 semaines d'utilisation constante.",
+      s3: "Maux de dos chroniques résolus après 14 jours de traitement."
+    },
+    faq: {
+      title: "FAQs",
+      items: [
+        { q: "Qu'est-ce que la ceinture WellUp™ ?", a: "C'est un support lombaire pneumatique conçu pour décomprimer la colonne vertébrale et soulager immédiatement la douleur." },
+        { q: "Combien de temps dois-je porter la ceinture WellUp™ pour voir des résultats ?", a: "Nous recommandons de l'utiliser 2 heures par jour. De nombreux utilisateurs ressentent des bénéfices dès les deux premières semaines." },
+        { q: "Y a-t-il des effets secondaires à l'utilisation de la ceinture WellUp™ ?", a: "Non, c'est un dispositif non invasif. Cependant, consultez toujours un médecin pour des conditions préexistantes graves." },
+        { q: "La ceinture WellUp™ peut-elle remplacer les visites chez le chiropracteur ?", a: "Elle peut être un excellent support complémentaire, mais ne doit pas remplacer un avis clinique spécialisé." },
+        { q: "Comment fonctionne exactement la ceinture WellUp™ ?", a: "Elle utilise 52 colonnes d'air qui, une fois gonflées, soulèvent délicatement le haut du corps en l'éloignant du bassin." }
+      ]
+    },
+    aboutS: {
+      title: "À propos de nous",
+      mission: "\"Notre mission est de redéfinir le bien-être lombaire grâce à l'innovation technologique et à la conception ergonomique.\"",
+      historyTitle: "Notre histoire",
+      history: "WellUp™ est né du besoin d'offrir une solution réelle et non invasive à ceux qui souffrent de maux de dos chroniques. Nous avons collaboré avec des experts en biomécanique pour créer une ceinture qui n'était pas seulement un support, mais un véritable système de décompression portable.",
+      whyWellupTitle: "Pourquoi WellUp ?",
+      whyWellup: "Contrairement aux supports traditionnels, la ceinture WellUp™ utilise 52 colonnes d'air dynamiques. Cette approche 'haute densité' assure une répartition uniforme du poids et une décompression millimétrique des vertèbres.",
+      certTitle: "Certification de qualité",
+      cert: "Chaque ceinture WellUp™ est testée individuellement pour maintenir une pression constante de 0,2 MPa pendant 24 heures."
+    },
+    thankYou: {
+      orderId: "Commande",
+      thanks: "Merci",
+      confirmed: "Votre commande est confirmée",
+      message: "Vous recevrez peut-être un message lorsque votre commande sera prête. Livraison prévue : 72 heures.",
+      summary: "Résumé",
+      shipping: "Livraison",
+      free: "GRATUITE",
+      total: "Total",
+      paymentMethod: "Mode de paiement",
+      cod: "Paiement à la livraison",
+      backHome: "Retour à l'accueil"
+    },
+    useCases: {
+      tabs: ['Sciatique', 'Travail sédentaire', 'Travail actif'],
+      sciaticaText: "Ressentez la douleur de la sciatique à cause de votre âge",
+      defaultText: "Un soutien optimal pour vos activités quotidiennes."
+    },
+    reviews: {
+      count: "15 Avis",
+      write: "rédiger votre avis"
+    },
+    paymentDetailed: {
+      title: "Paiement",
+      codTitle: "Paiement à la livraison",
+      codDesc: "Pour garantir une sécurité maximale à nos clients, nous utilisons exclusivement le modèle de paiement à la livraison.",
+      codList: ["Aucun paiement d'avance", "Payez seulement à la réception", "Courrier express"],
+      howTitle: "Comment ça fonctionne ?",
+      howDesc: "Une fois la commande confirmée via notre formulaire, le produit sera préparé et expédié sous 24 heures. Vous recevrez un code de suivi par SMS.",
+      safetyTitle: "Sécurité des données",
+      safetyDesc: "Vos données sont protégées et cryptées. Nous les utilisons exclusivement pour finaliser la livraison de votre commande WellUp™."
+    },
+    contactDetailed: {
+      title: "Contactez-nous",
+      email: "Email",
+      hours: "Horaires",
+      hoursVal: "Lun - Ven : 09:00 - 18:00",
+      social: "Social",
+      form: {
+        name: "NOM",
+        email: "EMAIL",
+        help: "COMMENT POUVONS-NOUS VOUS AIDER ?",
+        submit: "Envoyer le message"
+      }
+    },
+    privacyDetailed: {
+      title: "Politique de confidentialité",
+      content: "Votre vie privée est importante pour nous. Cette politique explique comment WellUp™ collecte, utilise et protège vos informations personnelles lorsque vous visitez notre site ou passez une commande.",
+      s1: {
+        t: "1. Informations collectées",
+        p: "Nous ne collectons que les données nécessaires au traitement de votre commande : Nom, Numéro de téléphone, Adresse de livraison et Code postal."
+      },
+      s2: {
+        t: "2. Utilisation des données",
+        p: "Vos données sont utilisées exclusivement pour l'expédition et la confirmation de la commande. Nous ne vendons ni ne partageons vos données avec des tiers à des fins de marketing."
+      },
+      s3: {
+        t: "3. Sécurité",
+        p: "Nous adoptons des mesures de sécurité avancées pour protéger vos données. Toutes les données sont stockées sur des serveurs sécurisés et cryptés."
+      }
+    },
+    termsDetailed: {
+      title: "Termes et conditions",
+      content: "En accédant au site WellUp™, vous acceptez les termes et conditions d'utilisation suivants.",
+      s1: {
+        t: "1. Commandes et paiements",
+        p: "WellUp™ fonctionne exclusivement par paiement à la livraison. La commande est considérée comme finalisée après confirmation téléphonique de notre équipe."
+      },
+      s2: {
+        t: "2. Expédition",
+        p: "La livraison est gratuite dans le monde entier. Les délais de livraison estimés sont de 3 à 4 jours ouvrables."
+      },
+      s3: {
+        t: "3. Politique de retour",
+        p: "Vous avez le droit de vous rétracter de l'achat dans les 14 jours suivant la réception des marchandises. Le produit doit être retourné intact dans son emballage d'origine."
+      }
+    },
+    cartDetailed: {
+      title: "Mon panier",
+      empty: "Le panier est vide",
+      startShopping: "Commencer les achats",
+      subtotal: "Sous-total",
+      shipping: "Livraison",
+      free: "GRATUIT",
+      total: "Total",
+      checkout: "Passer à la caisse"
+    },
+    footerDetailed: {
+      rights: "Tous droits réservés.",
+      privacy: "Confidentialité",
+      terms: "Conditions",
+      contact: "Contact"
+    }
+  },
+  de: {
+    nav: {
+      home: "Startseite",
+      product: "WellUp™ Gürtel",
+      about: "Über uns",
+      payment: "Zahlungsmethode",
+      contact: "Kontakt"
+    },
+    hero: {
+      title: "Erneuerter Komfort",
+      subtitle: "Verwandeln Sie jeden Tag in pure Magie.",
+      cta: "Jetzt kaufen"
+    },
+    ticker: {
+      shipping: "SCHNELLER 72H VERSAND",
+      guarantee: "GELD-ZURÜCK-GARANTIE",
+      easy: "EINFACHE BESTELLUNG"
+    },
+    benefits: {
+      title: "Erleben Sie beispiellose Vorteile",
+      desc: "Das Wesen des WellUp™ Gürtels liegt in seinen vielfältigen Vorteilen. Jeder Aspekt unseres Gürtels kann durch gezielte Kompression lebensverändernd wirken.",
+      list: ["Sofortige Linderung", "Komfortables Design", "Ischias & Rückenschmerzen", "Haltbarkeit & Langlebigkeit"]
+    },
+    order: {
+      formTitle: "Füllen Sie das Formular aus! Wir werden Sie kontaktieren, um Ihre Informationen zu bestätigen, bevor wir das Produkt versenden 📞✅",
+      addToCart: "In den Warenkorb",
+      orOrder: "Oder direkt bestellen",
+      name: "Vollständiger Name",
+      tel: "Telefonnummer",
+      addr: "Adresse",
+      city: "Stadt",
+      prov: "Provinz / Bundesland",
+      cap: "Postleitzahl",
+      qty: "Menge",
+      submit: "KLICKEN, UM DIE BESTELLUNG ABZUSCHLIESSEN",
+      processing: "VERARBEITUNG...",
+      delivered: "Geliefert",
+      save: "SPAREN"
+    },
+    announcement: [
+      "⏱ LIEFERUNG IN 3 TAGEN",
+      "💳 BARZAHLUNG BEI LIEFERUNG",
+      "🚚 KOSTENLOSER VERSAND"
+    ],
+    features: {
+      title: "\"Sofortiger Komfort und Haltbarkeit: WellUp™ Gürtel\"",
+      relief: "Sofortige Linderung",
+      reliefDesc: "Der WellUp™ Gürtel bietet eine schnelle Schmerzlinderung und lindert rasch Beschwerden, die mit Problemen wie Ischias und Schmerzen im unteren Rückenbereich verbunden sind.",
+      design: "Komfortables Design",
+      designDesc: "Ergonomisch gestaltet, sorgt der Gürtel für optimalen Komfort bei täglichem Gebrauch und ermöglicht eine angenehme Passform und ein Gefühl der Erleichterung.",
+      sciatica: "Lösung von Ischias- und Rückenproblemen",
+      sciaticaDesc: "Dank seiner Lendenstütze und der gezielten Kompression bekämpft der Gürtel effektiv Probleme wie Ischias und Schmerzen im unteren Rückenbereich und verbessert die allgemeine Rückengesundheit.",
+      durability: "Haltbarkeit und Langlebigkeit",
+      durabilityDesc: "Hergestellt aus hochwertigen Materialien, ist der Gürtel für eine längere Nutzung über die Zeit konzipiert und gewährleistet eine außergewöhnliche Haltbarkeit und zuverlässige Leistung."
+    },
+    stats: {
+      title: "Heilen Sie wie nie zuvor 💗",
+      s1: "Sofortige Linderung bei Patienten mit Rückenschmerzen und Ischias.",
+      s2: "Ischias in nur 2 Wochen konsequenter Anwendung eliminiert.",
+      s3: "Chronische Rückenschmerzen nach 14 Tagen Behandlung behoben."
+    },
+    faq: {
+      title: "FAQs",
+      items: [
+        { q: "Was ist der WellUp™ Gürtel?", a: "Es ist eine pneumatische Lendenwirbelstütze, die die Wirbelsäule dekomprimiert und sofortige Schmerzlinderung bietet." },
+        { q: "Wie lange sollte ich den WellUp™ Gürtel tragen, um Ergebnisse zu sehen?", a: "Wir empfehlen die Anwendung für 2 Stunden am Tag. Viele Anwender spüren bereits in den ersten zwei Wochen erste Vorteile." },
+        { q: "Gibt es Nebenwirkungen bei der Verwendung des WellUp™ Gürtels?", a: "Nein, es ist ein nicht-invasives Gerät. Konsultieren Sie jedoch bei schwerwiegenden Vorerkrankungen immer einen Arzt." },
+        { q: "Kann der WellUp™ Gürtel Besuche beim Chiropraktiker ersetzen?", a: "Er kann eine hervorragende ergänzende Unterstützung sein, sollte jedoch keinen klinischen Fachrat ersetzen." },
+        { q: "Wie genau funktioniert der WellUp™ Gürtel?", a: "Er verwendet 52 Luftsäulen, die nach dem Aufpumpen den Oberkörper sanft vom Becken wegheben." }
+      ]
+    },
+    aboutS: {
+      title: "Über uns",
+      mission: "\"Unsere Mission ist es, das Wohlbefinden im Lendenwirbelbereich durch technologische Innovation und ergonomisches Design neu zu definieren.\"",
+      historyTitle: "Unsere Geschichte",
+      history: "WellUp™ entstand aus dem Bedürfnis heraus, Menschen mit chronischen Rückenschmerzen eine echte, nicht-invasive Lösung anzubieten. Wir haben mit Biomechanik-Experten zusammengearbeitet, um einen Gürtel zu entwickeln, der nicht nur eine Stütze, sondern ein echtes tragbares Dekompressionssystem ist.",
+      whyWellupTitle: "Warum WellUp?",
+      whyWellup: "Im Gegensatz zu herkömmlichen Stützen verwendet der WellUp™ Gürtel 52 dynamische Luftsäulen. Dieser 'High-Density'-Ansatz sorgt für eine gleichmäßige Gewichtsverteilung und eine millimetergenaue Dekompression der Wirbel.",
+      certTitle: "Qualitätszertifizierung",
+      cert: "Jeder WellUp™ Gürtel wird einzeln getestet, um über 24 Stunden einen konstanten Druck von 0,2 MPa aufrechtzuerhalten."
+    },
+    thankYou: {
+      orderId: "Bestellung",
+      thanks: "Danke",
+      confirmed: "Ihre Bestellung ist bestätigt",
+      message: "Sie erhalten möglicherweise eine Nachricht, wenn Ihre Bestellung abholbereit ist. Voraussichtliche Lieferung: 72 Stunden.",
+      summary: "Zusammenfassung",
+      shipping: "Versand",
+      free: "KOSTENLOS",
+      total: "Gesamt",
+      paymentMethod: "Zahlungsmethode",
+      cod: "Nachnahme (Barzahlung bei Lieferung)",
+      backHome: "Zurück zur Startseite"
+    },
+    useCases: {
+      tabs: ['Ischias', 'Sedentäre Arbeit', 'Aktive Arbeit'],
+      sciaticaText: "Spüren Sie den Ischias-Schmerz aufgrund Ihres Alters",
+      defaultText: "Optimale Unterstützung für Ihre täglichen Aktivitäten."
+    },
+    reviews: {
+      count: "15 Bewertungen",
+      write: "Schreiben Sie eine Bewertung"
+    },
+    paymentDetailed: {
+      title: "Zahlung",
+      codTitle: "Nachnahme",
+      codDesc: "Um maximale Sicherheit für unsere Kunden zu gewährleisten, nutzen wir ausschließlich das Zahlungsmodell bei Lieferung.",
+      codList: ["Keine Vorauszahlung", "Zahlen Sie erst bei Erhalt", "Express-Kurier"],
+      howTitle: "Wie funktioniert es?",
+      howDesc: "Sobald die Bestellung über unser Formular bestätigt wurde, wird das Produkt innerhalb von 24 Stunden vorbereitet und versendet. Sie erhalten einen Tracking-Code per SMS.",
+      safetyTitle: "Datensicherheit",
+      safetyDesc: "Ihre Daten sind geschützt und verschlüsselt. Wir verwenden sie ausschließlich zur Abwicklung der Lieferung Ihrer WellUp™ Bestellung."
+    },
+    contactDetailed: {
+      title: "Kontakt",
+      email: "Email",
+      hours: "Öffnungszeiten",
+      hoursVal: "Mo - Fr: 09:00 - 18:00",
+      social: "Social Media",
+      form: {
+        name: "NAME",
+        email: "EMAIL",
+        help: "WIE KÖNNEN WIR IHNEN HELFEN?",
+        submit: "Nachricht senden"
+      }
+    },
+    privacyDetailed: {
+      title: "Datenschutzbestimmungen",
+      content: "Ihr Datenschutz ist uns wichtig. In dieser Richtlinie wird erläutert, wie WellUp™ Ihre personenbezogenen Daten sammelt, verwendet und schützt, wenn Sie unsere Website besuchen oder eine Bestellung aufgeben.",
+      s1: {
+        t: "1. Gesammelte Informationen",
+        p: "Wir sammeln nur die für die Bearbeitung Ihrer Bestellung erforderlichen Daten: Name, Telefonnummer, Lieferadresse und Postleitzahl."
+      },
+      s2: {
+        t: "2. Verwendung der Daten",
+        p: "Ihre Daten werden ausschließlich für den Versand und die Bestellbestätigung verwendet. Wir verkaufen oder teilen Ihre Daten nicht mit Dritten zu Marketingzwecken."
+      },
+      s3: {
+        t: "3. Sicherheit",
+        p: "Wir setzen fortschrittliche Sicherheitsmaßnahmen ein, um Ihre Daten zu schützen. Alle Daten werden auf sicheren, verschlüsselten Servern gespeichert."
+      }
+    },
+    termsDetailed: {
+      title: "Allgemeine Geschäftsbedingungen",
+      content: "Durch den Zugriff auf die WellUp™ Website akzeptieren Sie die folgenden Nutzungsbedingungen.",
+      s1: {
+        t: "1. Bestellungen und Zahlungen",
+        p: "WellUp™ arbeitet ausschließlich per Nachnahme. Die Bestellung gilt nach telefonischer Bestätigung durch unser Team als abgeschlossen."
+      },
+      s2: {
+        t: "2. Versand",
+        p: "Der Versand ist weltweit kostenlos. Die geschätzte Lieferzeit beträgt 3-4 Werktage."
+      },
+      s3: {
+        t: "3. Rückgaberecht",
+        p: "Sie haben das Recht, innerhalb von 14 Tagen nach Erhalt der Ware vom Kauf zurückzutreten. Das Produkt muss unversehrt in der Originalverpackung zurückgegeben werden."
+      }
+    },
+    cartDetailed: {
+      title: "Mein Warenkorb",
+      empty: "Warenkorb ist leer",
+      startShopping: "Einkauf starten",
+      subtotal: "Zwischensumme",
+      shipping: "Versand",
+      free: "KOSTENLOS",
+      total: "Gesamt",
+      checkout: "Zur Kasse"
+    },
+    footerDetailed: {
+      rights: "Alle Rechte vorbehalten.",
+      privacy: "Datenschutz",
+      terms: "Bedingungen",
+      contact: "Kontakt"
+    }
+  }
+};
+
+type Language = 'it' | 'en' | 'fr' | 'de';
+
+interface LanguageContextType {
+  lang: Language;
+  setLang: (lang: Language) => void;
+  t: typeof TRANSLATIONS['it'];
+}
+
+const LanguageContext = createContext<LanguageContextType | null>(null);
+
+const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) throw new Error('useLanguage must be used within LanguageProvider');
+  return context;
+};
+
+const LanguageSelector = () => {
+  const { lang, setLang } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const languages = [
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' }
+  ] as const;
+
+  const currentLang = languages.find(l => l.code === lang) || languages[0];
+
+  return (
+    <div className="relative">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 hover:border-brand-blue transition-all bg-white shadow-sm"
+      >
+        <span className="text-lg leading-none">{currentLang.flag}</span>
+        <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 p-1"
+          >
+            {languages.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => {
+                  setLang(l.code);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-4 py-3 text-sm font-bold uppercase transition-all rounded-lg ${lang === l.code ? 'bg-brand-blue/5 text-brand-blue' : 'hover:bg-gray-50 text-brand-dark'}`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg leading-none">{l.flag}</span>
+                  <span className="tracking-tight">{l.name}</span>
+                </div>
+                {lang === l.code && <Check className="w-4 h-4" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// Images based on the request (simulated URLs or using the provided descriptions)
+const IMAGES = {
+  hero: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Hero%20image.jpg",
+  productHero: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/s-l1600%20(6).jpg",
+  productLifestyle: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/women%20on%20a%20couch.jpg",
+  productHowTo: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Steps.png",
+  productDiagram: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/9804c865-c7e4-474c-4a37-674b971a5c00/public",
+  productStructure: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/6e838641-4796-41b4-2195-207907572700/public",
+  productBox: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/e0777995-1f95-46fd-4be0-a3399e578c00/public",
+  useCasePain: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Use.png",
+  reviewGrid: [
+    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400",
+    "https://images.unsplash.com/photo-1583454110551-21f2fa2ec617?auto=format&fit=crop&q=80&w=400",
+    "https://images.unsplash.com/photo-1544126592-807daf21565c?auto=format&fit=crop&q=80&w=400",
+    "https://images.unsplash.com/photo-1518611012118-29fa11345f14?auto=format&fit=crop&q=80&w=400"
+  ]
+};
+
+const AnnouncementBar = () => {
+  const { t } = useLanguage();
+  const items = t.announcement;
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % items.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="bg-brand-blue text-white py-2 text-center text-xs font-semibold tracking-wide uppercase overflow-hidden whitespace-nowrap">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          {items[index]}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const Navbar = ({ activePage, setActivePage, cartQuantity, onCartClick }: { activePage: string, setActivePage: (p: string) => void, cartQuantity: number, onCartClick: () => void }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
+
+  const navLinks = [
+    { id: 'home', label: t.nav.home },
+    { id: 'product', label: t.nav.product },
+    { id: 'about', label: t.nav.about },
+    { id: 'payment', label: t.nav.payment },
+    { id: 'contact', label: t.nav.contact }
+  ];
+
+  return (
+    <nav className="h-14 sticky top-0 z-50 bg-white border-b border-gray-100 px-6 flex items-center justify-between shadow-sm">
+      <div className="flex items-center gap-2">
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden">
+          <Menu className="w-5 h-5 text-brand-dark" />
+        </button>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActivePage('home')}>
+          <img 
+            src="https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Logo%20svg.svg" 
+            alt="Wellup Logo" 
+            className="h-8 w-auto"
+          />
+        </div>
+      </div>
+
+      <div className="hidden md:flex items-center gap-6 text-[13px] font-medium">
+        {navLinks.map(link => (
+          <button
+            key={link.id}
+            onClick={() => setActivePage(link.id)}
+            className={`transition-colors h-full flex items-center px-4 py-1.5 rounded-full ${activePage === link.id ? 'bg-brand-blue text-white' : 'hover:text-brand-blue'}`}
+          >
+            {link.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-4 text-lg">
+        <LanguageSelector />
+        <div className="relative cursor-pointer" onClick={onCartClick}>
+          <ShoppingBag className="w-5 h-5 text-gray-500" />
+          {cartQuantity > 0 && (
+            <span className="absolute -top-1 -right-2 bg-brand-green text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+              {cartQuantity}
+            </span>
+          )}
+        </div>
+      </div>
+      
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            className="fixed inset-0 z-50 bg-white p-6 md:hidden"
+          >
+            <div className="flex justify-between items-center mb-8">
+              <span className="text-xl font-bold text-brand-blue">Wellup</span>
+              <X className="w-6 h-6" onClick={() => setIsMobileMenuOpen(false)} />
+            </div>
+            <div className="flex flex-col gap-6">
+              {navLinks.map(link => (
+                <button
+                  key={link.id}
+                  onClick={() => { setActivePage(link.id); setIsMobileMenuOpen(false); }}
+                  className={`text-left text-lg font-bold border-b border-gray-100 pb-2 ${activePage === link.id ? 'text-brand-blue' : 'text-brand-dark'}`}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const TrustTicker = () => {
+  const { t } = useLanguage();
+  return (
+    <div className="bg-brand-blue py-3 overflow-hidden border-t border-brand-blue/20">
+      <div className="animate-ticker-fast whitespace-nowrap flex items-center gap-12 text-white font-bold uppercase tracking-widest text-sm">
+        {[...Array(10)].map((_, i) => (
+          <span key={i} className="flex items-center gap-12">
+            <span>{t.ticker.shipping}</span>
+            <span>·</span>
+            <span>{t.ticker.guarantee}</span>
+            <span>·</span>
+            <span>{t.ticker.easy}</span>
+            <span>·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const HeroSection = ({ onCtaClick }: { onCtaClick: () => void }) => {
+  const { t } = useLanguage();
+  return (
+    <section className="relative h-[65vh] flex overflow-hidden border-b border-gray-100">
+      <div className="w-full md:w-1/2 relative bg-gray-50 flex flex-col justify-center px-10 md:px-20 py-10 z-10">
+        <div className="absolute inset-0 bg-cover bg-center opacity-10 md:hidden" style={{ backgroundImage: `url(${IMAGES.hero})` }}></div>
+        <motion.h1 
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          className="text-5xl md:text-7xl font-black text-brand-dark leading-tight mb-2 uppercase"
+        >
+          {t.hero.title.split(' ')[0]}<br />{t.hero.title.split(' ')[1]}
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg md:text-xl text-gray-700 italic font-medium"
+        >
+          {t.hero.subtitle}
+        </motion.p>
+        <motion.button 
+          onClick={onCtaClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-8 border-2 border-brand-dark text-brand-dark w-max px-10 py-3 font-bold uppercase tracking-widest text-[11px] hover:bg-black hover:text-white transition-all"
+        >
+          {t.hero.cta}
+        </motion.button>
+      </div>
+      <div className="hidden md:block md:w-1/2 relative">
+        <img src={IMAGES.hero} alt="Comfort Rinnovato" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent" />
+      </div>
+    </section>
+  );
+};
+
+const BenefitsSection = () => {
+  const { t } = useLanguage();
+  return (
+    <section className="py-16 px-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-8 items-center border-b border-gray-100 pb-12">
+          <div className="w-full md:w-1/3 aspect-square bg-gray-50 flex items-center justify-center rounded-lg border border-gray-100 p-4">
+            <img src={IMAGES.productHero} alt="WellUp Cintura" className="max-h-full" />
+          </div>
+          <div className="flex-1 space-y-4">
+            <h2 className="text-sm font-black uppercase tracking-wider text-brand-dark">{t.benefits.title}</h2>
+            <p className="text-xs text-gray-500 leading-relaxed max-w-xl">
+              {t.benefits.desc}
+            </p>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-[11px] font-bold uppercase tracking-tight text-gray-700">
+              {t.benefits.list.map((item, i) => (
+                <div key={i} className="flex items-center gap-2">✅ <span className="opacity-80">{item}</span></div>
+              ))}
+            </div>
+          </div>
+        </div>
+    </section>
+  );
+};
+
+// Symbols and state management for the order flow
+const ThankYouPage = ({ name, total }: { name: string, total: string }) => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="py-20 px-6 max-w-4xl mx-auto text-center"
+    >
+      <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden">
+        <div className="p-12 space-y-8">
+          <div className="w-20 h-20 bg-brand-green text-white rounded-full flex items-center justify-center mx-auto shadow-lg shadow-green-100">
+            <Check className="w-10 h-10" />
+          </div>
+          <div>
+            <p className="text-xs font-black text-brand-blue uppercase tracking-[0.2em] mb-2">{t.thankYou.orderId} #112292</p>
+            <h2 className="text-4xl font-black text-brand-dark">{t.thankYou.thanks}, {name}!</h2>
+          </div>
+          
+          <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100 flex flex-col items-center gap-4">
+            <div className="w-full h-48 bg-gray-200 rounded-2xl relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" alt="Map" className="w-full h-full object-cover grayscale opacity-50" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-white p-3 rounded-full shadow-xl">
+                   <MapPin className="w-6 h-6 text-brand-blue" />
+                </div>
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl text-[10px] font-bold text-brand-blue uppercase tracking-widest">
+                {t.thankYou.confirmed}
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 font-medium leading-relaxed">
+              {t.thankYou.message}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 text-left border-t border-gray-100 pt-8">
+            <div className="space-y-4">
+              <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-widest">{t.thankYou.summary}</h4>
+              <div className="flex justify-between items-center text-sm font-bold text-brand-dark">
+                <span>WellUp™ Cintura</span>
+                <span>{total}</span>
+              </div>
+              <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                <span>{t.thankYou.shipping}</span>
+                <span className="text-brand-green font-black">{t.thankYou.free}</span>
+              </div>
+              <div className="pt-4 border-t border-gray-50 flex justify-between items-center">
+                <span className="text-xs font-black uppercase text-brand-blue">{t.thankYou.total}</span>
+                <span className="text-xl font-black text-brand-dark">{total}</span>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-widest">{t.thankYou.paymentMethod}</h4>
+              <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+                <Truck className="w-5 h-5 text-brand-blue" />
+                <span className="text-xs font-bold text-brand-dark uppercase">{t.thankYou.cod}</span>
+              </div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-8 px-10 py-4 bg-brand-blue text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-brand-dark transition-all"
+          >
+            {t.thankYou.backHome}
+          </button>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: string, total: string) => void, onAddToCart: (q: number) => void }) => {
+  const { t } = useLanguage();
+  const [activeImg, setActiveImg] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({ nome: '', tel: '', ind: '', citta: '', prov: '', cap: '' });
+
+  const basePrice = 79.95;
+  const totalPrice = (basePrice * quantity).toFixed(2);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      onOrderSuccess(formData.nome, `€${totalPrice}`);
+    }, 2000);
+  };
+
+  const gallery = [
+    { src: IMAGES.hero, alt: "WellUp Comfort" },
+    { src: IMAGES.productHero, alt: "WellUp Cintura Hero" },
+    { src: IMAGES.productHowTo, alt: "Come usare la cintura" },
+    { src: IMAGES.productLifestyle, alt: "Lifestyle uso cintura" },
+    { src: IMAGES.useCasePain, alt: "WellUp In Uso" }
+  ];
+
+  const Accordion = ({ title, children }: { title: string, children: ReactNode }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <div className="border-b border-gray-100 last:border-0">
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full py-3 flex justify-between items-center text-left font-bold uppercase text-[10px] tracking-widest text-brand-dark"
+        >
+          {title}
+          <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden pb-4 text-[11px] text-gray-500 leading-relaxed font-medium"
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  };
+
+  return (
+    <section id="product" className="py-12 bg-white px-6">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
+        {/* Left: Gallery */}
+        <div className="space-y-4">
+          <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center p-6">
+            <img src={gallery[activeImg].src} alt={gallery[activeImg].alt} className="w-full h-full object-contain" />
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2 noscrollbar">
+            {gallery.map((img, i) => (
+              <button 
+                key={i} 
+                onClick={() => setActiveImg(i)}
+                className={`w-16 h-16 rounded shadow-sm overflow-hidden border-2 transition-all flex-shrink-0 ${activeImg === i ? 'border-brand-blue' : 'border-transparent opacity-60'}`}
+              >
+                <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Info & Form */}
+        <div className="flex flex-col">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-3xl font-black text-brand-blue uppercase leading-none">WellUp™ Cintura</h2>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="text-orange-400 text-xs">⭐⭐⭐⭐⭐</div>
+                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-tighter">15 Recensioni</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-gray-400 line-through text-sm">€119,99</div>
+              <div className="text-2xl font-black text-brand-dark leading-tight">€79,95</div>
+              <div className="bg-brand-green/10 text-brand-green text-[10px] font-bold px-2 py-0.5 rounded border border-brand-green/30 mt-1 uppercase">
+                SAVE €40,04
+              </div>
+            </div>
+          </div>
+
+          <div className="p-5 border-2 border-brand-blue/30 bg-blue-50/20 rounded-xl space-y-4">
+            <p className="text-[11px] font-bold text-brand-blue uppercase text-center leading-tight">
+              {t.order.formTitle}
+            </p>
+            
+            <form id="order-form" onSubmit={handleSubmit} className="space-y-3">
+              <div className="grid grid-cols-2 gap-3 pb-2">
+                <motion.button 
+                  type="button"
+                  onClick={() => onAddToCart(quantity)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="col-span-2 py-4 bg-brand-blue text-white font-black rounded-lg uppercase tracking-widest text-[10px] shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  {t.order.addToCart}
+                </motion.button>
+              </div>
+
+              <div className="relative py-4">
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-brand-blue/10"></div></div>
+                <div className="relative flex justify-center text-[9px] uppercase font-black text-brand-blue bg-blue-50/50 px-2 w-max mx-auto">{t.order.orOrder}</div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <input type="text" placeholder={t.order.name} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.nome} onChange={e => setFormData({...formData, nome: e.target.value})} />
+                <input type="tel" placeholder={t.order.tel} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.tel} onChange={e => setFormData({...formData, tel: e.target.value})} />
+                <input type="text" placeholder={t.order.addr} className="col-span-2 w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.ind} onChange={e => setFormData({...formData, ind: e.target.value})} />
+                <input type="text" placeholder={t.order.city} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.citta} onChange={e => setFormData({...formData, citta: e.target.value})} />
+                <input type="text" placeholder={t.order.prov} className="w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.prov} onChange={e => setFormData({...formData, prov: e.target.value})} />
+                <input type="text" placeholder={t.order.cap} className="col-span-2 w-full text-xs p-2.5 bg-white border border-gray-300 rounded focus:border-brand-blue outline-none" required value={formData.cap} onChange={e => setFormData({...formData, cap: e.target.value})} />
+              </div>
+
+              <div className="flex items-center justify-between py-2 border-t border-brand-blue/10">
+                <span className="text-[10px] font-black uppercase text-brand-blue">{t.order.qty}</span>
+                <div className="flex items-center gap-4 bg-white border border-gray-200 rounded-lg p-1">
+                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-1 hover:bg-gray-50 rounded"><Minus className="w-3 h-3" /></button>
+                  <span className="text-xs font-bold w-4 text-center">{quantity}</span>
+                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="p-1 hover:bg-gray-50 rounded"><Plus className="w-3 h-3" /></button>
+                </div>
+              </div>
+
+              <motion.button 
+                disabled={isSubmitting}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-4 text-white font-black rounded-lg shadow-lg hover:shadow-xl transition-all uppercase tracking-wide text-xs flex items-center justify-center gap-3 ${isSubmitting ? 'bg-gray-400' : 'bg-brand-green'}`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}><ShoppingBag className="w-4 h-4" /></motion.div>
+                    {t.order.processing}
+                  </>
+                ) : (
+                  <>{t.order.submit} - €{totalPrice}</>
+                )}
+              </motion.button>
+            </form>
+
+            <div className="flex justify-between px-2 pt-2">
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">🛒</div>
+                <span className="text-[9px] font-bold text-gray-400">Jun 1st</span>
+              </div>
+              <div className="flex-1 h-px bg-gray-200 mt-4 mx-2"></div>
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">📦</div>
+                <span className="text-[9px] font-bold text-gray-400">Jun 2nd</span>
+              </div>
+              <div className="flex-1 h-px bg-gray-200 mt-4 mx-2"></div>
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs mb-1">🏠</div>
+                <span className="text-[9px] font-bold text-brand-blue uppercase">Consegnato</span>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-4 italic text-[11px] text-gray-600 border-t pt-4">
+            "Ho mal di schiena e indosso la cintura ed è fantastico." — <span className="font-bold text-brand-dark uppercase">Miles ⭐⭐⭐⭐⭐</span>
+          </p>
+
+          <div className="mt-4">
+            <Accordion title="PAGAMENTO E CONSEGNA">
+              Offriamo spedizione rapida in tutta Italia in 3 giorni lavorativi. Pagamento alla consegna (Contrassegno) disponibile per la tua sicurezza.
+            </Accordion>
+            <Accordion title="POLITICA DI RESO">
+              Puoi restituire il prodotto entro 14 giorni se non sei soddisfatto dei risultati. Contatta il nostro supporto per avviare la procedura.
+            </Accordion>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const UseCaseTabs = () => {
+  const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState(t.useCases.tabs[0]);
+  const tabs = t.useCases.tabs;
+  
+  return (
+    <motion.section 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="py-20 max-w-7xl mx-auto px-6"
+    >
+      <div className="flex justify-center gap-4 mb-12 flex-wrap">
+        {tabs.map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-6 py-2 rounded-lg border-2 font-medium transition-all ${activeTab === tab ? 'bg-brand-blue text-white border-brand-blue' : 'text-brand-blue border-brand-blue/20 hover:border-brand-blue/50'}`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid md:grid-cols-2 items-center gap-12 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+        <motion.div 
+          key={activeTab}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="relative group cursor-zoom-in"
+        >
+          <img src={IMAGES.useCasePain} alt="Dolore" className="rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700" />
+          <div className="absolute top-4 left-4 bg-black/20 p-2 rounded-full backdrop-blur-sm"><Search className="w-5 h-5 text-white" /></div>
+        </motion.div>
+        <motion.div 
+           key={`${activeTab}-text`}
+           initial={{ opacity: 0, x: 20 }}
+           animate={{ opacity: 1, x: 0 }}
+           className="text-gray-500 text-xl font-light italic"
+        >
+          {activeTab === tabs[0] ? t.useCases.sciaticaText : t.useCases.defaultText}
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+};
+
+const FeaturesBanner = () => {
+  const { t } = useLanguage();
+  return (
+    <section className="bg-brand-blue py-24 px-6">
+      <div className="max-w-7xl mx-auto text-center mb-16">
+        <h2 className="text-2xl md:text-5xl font-bold text-white tracking-tight">
+          {t.features.title}
+        </h2>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 items-center">
+        <div className="space-y-12">
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-white">{t.features.relief}</h3>
+            <p className="text-white/70 text-sm leading-relaxed">{t.features.reliefDesc}</p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-white">{t.features.design}</h3>
+            <p className="text-white/70 text-sm leading-relaxed">{t.features.designDesc}</p>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="bg-white p-6 rounded-[2rem] shadow-2xl overflow-hidden">
+            <img src={IMAGES.productBox} alt="WellUp Box" className="w-full max-w-sm" />
+          </div>
+        </div>
+
+        <div className="space-y-12">
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-white">{t.features.sciatica}</h3>
+            <p className="text-white/70 text-sm leading-relaxed">{t.features.sciaticaDesc}</p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-white">{t.features.durability}</h3>
+            <p className="text-white/70 text-sm leading-relaxed">{t.features.durabilityDesc}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const StatsSection = () => {
+  const { t } = useLanguage();
+  const StatsRing = ({ percentage, text, colorClass }: { percentage: number, text: string, colorClass: string }) => (
+    <div className="flex items-center gap-4">
+      <div className={`w-14 h-14 rounded-full border-4 ${colorClass} flex items-center justify-center text-sm font-black bg-white flex-shrink-0`}>
+        {percentage}%
+      </div>
+      <p className="text-[11px] leading-tight font-semibold text-gray-700">{text}</p>
+    </div>
+  );
+
+  return (
+    <section className="bg-gray-50 border-t border-gray-200 py-10 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-xl font-black text-brand-dark mb-10 text-center uppercase tracking-widest">
+          {t.stats.title}
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <StatsRing percentage={95} colorClass="border-brand-blue text-brand-blue" text={t.stats.s1} />
+          <StatsRing percentage={90} colorClass="border-brand-green text-brand-green" text={t.stats.s2} />
+          <StatsRing percentage={75} colorClass="border-orange-400 text-orange-400" text={t.stats.s3} />
+        </div>
+        <p className="text-center text-[9px] text-gray-300 mt-10 italic uppercase tracking-widest">Caption about the results and/or link for their proof.</p>
+      </div>
+    </section>
+  );
+};
+
+const FAQSection = () => {
+  const { t } = useLanguage();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const faqs = t.faq.items;
+
+  return (
+    <section className="bg-brand-blue py-16 px-6">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-3xl font-black text-white text-center mb-10 uppercase tracking-tighter">{t.faq.title}</h2>
+        <div className="space-y-2">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border-b border-white/10 pb-2">
+              <button 
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full flex justify-between items-center text-left py-3 text-[13px] text-white font-bold tracking-tight hover:opacity-80 transition-opacity"
+              >
+                <span className="flex items-center gap-3">
+                  <div className="bg-white/10 p-1 rounded-full"><Plus className={`w-3 h-3 transition-transform ${openIndex === i ? 'rotate-45' : ''}`} /></div>
+                  {faq.q}
+                </span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${openIndex === i ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {openIndex === i && (
+                  <motion.div 
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden text-white/60 text-[11px] leading-snug italic pb-2"
+                  >
+                    {faq.a}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ReviewsSection = () => {
+  const { t } = useLanguage();
+  return (
+    <section className="py-24 px-6 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+        <div>
+           <div className="flex items-center gap-4 mb-2">
+            <span className="text-4xl font-bold text-brand-dark italic">5.0</span>
+            <div className="flex text-brand-blue">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-6 h-6 fill-current" />)}
+            </div>
+           </div>
+           <p className="text-gray-400 font-medium uppercase text-[10px] tracking-widest">{t.reviews.count}</p>
+        </div>
+        <div className="flex gap-4">
+          <button className="px-6 py-2 border border-brand-dark font-bold uppercase text-[10px] tracking-widest rounded-sm hover:bg-brand-dark hover:text-white transition-all">{t.reviews.write}</button>
+          <button className="p-2 border border-brand-dark rounded-sm"><Menu className="w-5 h-5" /></button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {IMAGES.reviewGrid.map((img, i) => (
+          <div key={i} className="aspect-square rounded-2xl overflow-hidden group">
+            <img src={img} alt="Recensione utente" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const AboutUs = () => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="py-24 px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.aboutS.title}</h2>
+      <div className="space-y-8 text-gray-700 leading-relaxed">
+        <p className="text-lg italic font-medium border-l-4 border-brand-blue pl-6 py-2">
+          {t.aboutS.mission}
+        </p>
+        <div className="grid md:grid-cols-2 gap-12 pt-8">
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-widest text-brand-blue">{t.aboutS.historyTitle}</h3>
+            <p className="text-[13px]">{t.aboutS.history}</p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-widest text-brand-blue">{t.aboutS.whyWellupTitle}</h3>
+            <p className="text-[13px]">{t.aboutS.whyWellup}</p>
+          </div>
+        </div>
+        <div className="bg-gray-50 p-8 rounded-2xl flex items-center gap-8 mt-12">
+          <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <Check className="w-10 h-10 text-brand-blue" />
+          </div>
+          <div>
+            <h4 className="font-bold text-brand-dark mb-1">{t.aboutS.certTitle}</h4>
+            <p className="text-xs text-gray-500 font-medium">{t.aboutS.cert}</p>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const PaymentMethod = () => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="py-24 px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.paymentDetailed.title}</h2>
+      <div className="grid md:grid-cols-2 gap-12">
+        <div className="bg-brand-blue text-white p-10 rounded-3xl space-y-6">
+          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center">
+            <Truck className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-2xl font-bold italic">{t.paymentDetailed.codTitle}</h3>
+          <p className="text-sm text-white/70 leading-relaxed font-medium">
+            {t.paymentDetailed.codDesc}
+          </p>
+          <ul className="space-y-3 text-xs font-bold uppercase tracking-widest">
+            {t.paymentDetailed.codList.map((item: string, i: number) => (
+              <li key={i} className="flex items-center gap-3">✅ {item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="space-y-8 flex flex-col justify-center">
+          <div className="space-y-2">
+            <h4 className="text-xs font-black uppercase text-brand-blue">{t.paymentDetailed.howTitle}</h4>
+            <p className="text-[13px] text-gray-600 leading-relaxed">{t.paymentDetailed.howDesc}</p>
+          </div>
+          <div className="space-y-2">
+            <h4 className="text-xs font-black uppercase text-brand-blue">{t.paymentDetailed.safetyTitle}</h4>
+            <p className="text-[13px] text-gray-600 leading-relaxed">{t.paymentDetailed.safetyDesc}</p>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const ContactUs = () => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="py-24 px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.contactDetailed.title}</h2>
+      <div className="grid md:grid-cols-3 gap-12">
+        <div className="md:col-span-1 space-y-8">
+          <div>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.email}</h4>
+            <p className="text-sm font-bold text-brand-dark">supporto@wellup.shop</p>
+          </div>
+          <div>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.hours}</h4>
+            <p className="text-sm font-bold text-brand-dark">{t.contactDetailed.hoursVal}</p>
+          </div>
+          <div>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#28A745] mb-2">{t.contactDetailed.social}</h4>
+            <div className="flex gap-4 mt-2">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><User className="w-4 h-4 text-brand-blue" /></div>
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><User className="w-4 h-4 text-brand-blue" /></div>
+            </div>
+          </div>
+        </div>
+        <div className="md:col-span-2">
+          <form className="space-y-4 bg-gray-50 p-8 rounded-3xl">
+            <div className="grid grid-cols-2 gap-4">
+              <input type="text" placeholder={t.contactDetailed.form.name} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
+              <input type="email" placeholder={t.contactDetailed.form.email} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all" />
+            </div>
+            <textarea placeholder={t.contactDetailed.form.help} rows={4} className="w-full text-[10px] font-bold p-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-brand-blue transition-all resize-none"></textarea>
+            <button className="w-full py-4 bg-brand-dark text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-brand-blue transition-all">{t.contactDetailed.form.submit}</button>
+          </form>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const PrivacyPolicy = () => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="py-24 px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.privacyDetailed.title}</h2>
+      <div className="space-y-6 text-[13px] text-gray-600 leading-relaxed font-medium">
+        <p>{t.privacyDetailed.content}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.privacyDetailed.s1.t}</h3>
+        <p>{t.privacyDetailed.s1.p}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.privacyDetailed.s2.t}</h3>
+        <p>{t.privacyDetailed.s2.p}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.privacyDetailed.s3.t}</h3>
+        <p>{t.privacyDetailed.s3.p}</p>
+      </div>
+    </motion.section>
+  );
+};
+
+const Termini = () => {
+  const { t } = useLanguage();
+  return (
+    <motion.section 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="py-24 px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-5xl font-black text-brand-blue uppercase mb-12 tracking-tight">{t.termsDetailed.title}</h2>
+      <div className="space-y-6 text-[13px] text-gray-600 leading-relaxed font-medium">
+        <p>{t.termsDetailed.content}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.termsDetailed.s1.t}</h3>
+        <p>{t.termsDetailed.s1.p}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.termsDetailed.s2.t}</h3>
+        <p>{t.termsDetailed.s2.p}</p>
+        
+        <h3 className="text-lg font-black text-brand-dark uppercase pt-4">{t.termsDetailed.s3.t}</h3>
+        <p>{t.termsDetailed.s3.p}</p>
+      </div>
+    </motion.section>
+  );
+};
+
+const CartDrawer = ({ isOpen, onClose, quantity, setQuantity, onCheckout }: { isOpen: boolean, onClose: () => void, quantity: number, setQuantity: (q: number) => void, onCheckout: () => void }) => {
+  const { t } = useLanguage();
+  const price = 79.95;
+  const total = (price * quantity).toFixed(2);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]"
+          />
+          <motion.div 
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl flex flex-col"
+          >
+            <div className="p-6 border-b flex justify-between items-center">
+              <h2 className="text-xl font-black text-brand-dark uppercase tracking-tight">{t.cartDetailed.title}</h2>
+              <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {quantity === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
+                    <ShoppingBag className="w-10 h-10 text-gray-300" />
+                  </div>
+                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">{t.cartDetailed.empty}</p>
+                  <button 
+                    onClick={onClose}
+                    className="text-xs font-black text-brand-blue uppercase tracking-widest hover:underline"
+                  >
+                    {t.cartDetailed.startShopping}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-4 p-4 border rounded-2xl bg-gray-50/50">
+                  <div className="w-24 h-24 bg-white rounded-xl border p-2 flex items-center justify-center">
+                    <img src={IMAGES.productHero} alt="Product" className="max-h-full object-contain" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-sm font-black text-brand-dark uppercase tracking-tight">WellUp™ Cintura</h3>
+                      <button onClick={() => setQuantity(0)} className="text-gray-400 hover:text-red-500">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-brand-blue font-black uppercase">Standard Size / Beige</p>
+                    <div className="flex justify-between items-center pt-2">
+                      <div className="flex items-center gap-3 bg-white border rounded-lg px-2 py-1">
+                        <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-0.5"><Minus className="w-3 h-3" /></button>
+                        <span className="text-xs font-bold w-4 text-center">{quantity}</span>
+                        <button onClick={() => setQuantity(quantity + 1)} className="p-0.5"><Plus className="w-3 h-3" /></button>
+                      </div>
+                      <span className="font-black text-brand-dark">€{total}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {quantity > 0 && (
+              <div className="p-6 border-t bg-gray-50 space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    <span>{t.cartDetailed.subtotal}</span>
+                    <span>€{total}</span>
+                  </div>
+                  <div className="flex justify-between text-xs font-bold text-brand-green uppercase tracking-widest">
+                    <span>{t.cartDetailed.shipping}</span>
+                    <span>{t.cartDetailed.free}</span>
+                  </div>
+                  <div className="flex justify-between text-lg font-black text-brand-dark uppercase tracking-tight pt-2 border-t">
+                    <span>{t.cartDetailed.total}</span>
+                    <span>€{total}</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={onCheckout}
+                  className="w-full py-4 bg-brand-green text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg hover:shadow-xl transition-all"
+                >
+                  {t.cartDetailed.checkout}
+                </button>
+                <div className="flex justify-center items-center gap-4 opacity-50 grayscale">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal" className="h-4" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-4" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-4" />
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const Footer = ({ setActivePage }: { setActivePage: (p: string) => void }) => {
+  const { t } = useLanguage();
+  return (
+    <footer className="bg-brand-blue py-12 px-6 border-t border-white/5">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col items-center md:items-start gap-4">
+           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActivePage('home')}>
+             <img 
+              src="https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Logo%20svg.svg" 
+              alt="Wellup Logo" 
+              className="h-6 w-auto brightness-0 invert"
+            />
+            <span className="text-xl font-bold text-white tracking-widest uppercase">Wellup</span>
+          </div>
+          <p className="text-white/50 text-[10px] tracking-tight">© 2026 WellUp™ Cintura. {t.footerDetailed.rights}</p>
+        </div>
+        <div className="flex gap-8 text-white/70 text-xs font-medium uppercase tracking-widest">
+          <button onClick={() => setActivePage('privacy')} className="hover:text-white transition-colors">{t.footerDetailed.privacy}</button>
+          <button onClick={() => setActivePage('termini')} className="hover:text-white transition-colors">{t.footerDetailed.terms}</button>
+          <button onClick={() => setActivePage('contact')} className="hover:text-white transition-colors">{t.footerDetailed.contact}</button>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default function LandingPage() {
+  const [lang, setLang] = useState<Language>(() => {
+    const path = window.location.pathname;
+    if (path.startsWith('/eng')) return 'en';
+    if (path.startsWith('/fr')) return 'fr';
+    if (path.startsWith('/de')) return 'de';
+    return 'it';
+  });
+
+  const [activePage, setActivePage] = useState('home');
+  const [orderInfo, setOrderInfo] = useState<{ name: string, total: string } | null>(null);
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    const langPrefix = lang === 'it' ? '' : lang === 'en' ? '/eng' : `/${lang}`;
+    if (window.location.pathname !== langPrefix && (langPrefix !== '' || window.location.pathname !== '/')) {
+      window.history.pushState(null, '', langPrefix || '/');
+    }
+  }, [lang]);
+
+  const handleOrderSuccess = (name: string, total: string) => {
+    setOrderInfo({ name, total });
+    setActivePage('success');
+  };
+
+  const handleAddToCart = (q: number) => {
+    setCartQuantity(prev => prev + q);
+    setIsCartOpen(true);
+  };
+
+  const renderPage = () => {
+    if (orderInfo && activePage === 'success') {
+      return <ThankYouPage name={orderInfo.name} total={orderInfo.total} />;
+    }
+
+    switch (activePage) {
+      case 'about': return <AboutUs />;
+      case 'payment': return <PaymentMethod />;
+      case 'contact': return <ContactUs />;
+      case 'privacy': return <PrivacyPolicy />;
+      case 'termini': return <Termini />;
+      case 'product':
+        return (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <ProductPage onOrderSuccess={handleOrderSuccess} onAddToCart={handleAddToCart} />
+            <FeaturesBanner />
+            <FAQSection />
+          </motion.div>
+        );
+      default:
+        return (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <HeroSection onCtaClick={() => setActivePage('product')} />
+            <TrustTicker />
+            <BenefitsSection />
+            <StatsSection />
+            <UseCaseTabs />
+            <FeaturesBanner />
+            <ReviewsSection />
+            <FAQSection />
+          </motion.div>
+        );
+    }
+  };
+
+  return (
+    <LanguageContext.Provider value={{ lang, setLang, t: TRANSLATIONS[lang] || TRANSLATIONS.it }}>
+      <div className="min-h-screen bg-white font-sans text-brand-dark overflow-x-hidden">
+        <AnnouncementBar />
+        <Navbar 
+          activePage={activePage} 
+          setActivePage={setActivePage} 
+          cartQuantity={cartQuantity}
+          onCartClick={() => setIsCartOpen(true)}
+        />
+        
+        <CartDrawer 
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          quantity={cartQuantity}
+          setQuantity={setCartQuantity}
+          onCheckout={() => {
+            setIsCartOpen(false);
+            setActivePage('product');
+            setTimeout(() => {
+              document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }}
+        />
+
+        <main>
+          {renderPage()}
+        </main>
+        <Footer setActivePage={setActivePage} />
+      </div>
+    </LanguageContext.Provider>
+  );
+}

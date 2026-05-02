@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-blue: #1A3C8F;
+  --color-brand-green: #28A745;
+  --color-brand-dark: #1A1A1A;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-brand-dark bg-white overflow-x-hidden;
+  }
+}
+
+/* Custom utility for the scrolling ticker */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}
+
+.animate-ticker-fast {
+  animation: ticker 20s linear infinite;
+}
