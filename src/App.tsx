@@ -28,7 +28,7 @@ const TRANSLATIONS = {
   it: {
     nav: {
       home: "Home",
-      product: "WellUp™ Cintura",
+      product: "Well Up Cintura",
       about: "Chi siamo",
       payment: "Metodo di pagamento",
       contact: "Contattaci"
@@ -45,7 +45,7 @@ const TRANSLATIONS = {
     },
     benefits: {
       title: "Sperimenta Vantaggi Ineguagliabili",
-      desc: "L'essenza di WellUp™ Cintura risiede nei suoi vantaggi multifaccettati. Ogni aspetto della nostra cintura può portare un cambiamento trasformativo nella tua vita quotidiana attraverso una compressione mirata.",
+      desc: "L'essenza di Well Up Cintura risiede nei suoi vantaggi multifaccettati. Ogni aspetto della nostra cintura può portare un cambiamento trasformativo nella tua vita quotidiana attraverso una compressione mirata.",
       list: ["Sollievo Immediato", "Design Confortevole", "Sciatica e Lombalgia", "Durabilità e Longevità"]
     },
     order: {
@@ -70,9 +70,9 @@ const TRANSLATIONS = {
       "🚚 SPEDIZIONE GRATUITA"
     ],
     features: {
-      title: "\"Comfort Istantaneo e Durabilità: Cintura WellUp™\"",
+      title: "\"Comfort Istantaneo e Durabilità: Cintura Well Up\"",
       relief: "Sollievo Immediato",
-      reliefDesc: "La cintura WellUp™ Cintura offre un rapido sollievo dal dolore, alleviando rapidamente i disagi associati a problemi come la sciatica e la lombalgia.",
+      reliefDesc: "La cintura Well Up Cintura offre un rapido sollievo dal dolore, alleviando rapidamente i disagi associati a problemi come la sciatica e la lombalgia.",
       design: "Design Confortevole",
       designDesc: "Progettata con un design ergonomico, la cintura assicura un comfort ottimale durante l'uso quotidiano, consentendo una vestibilità piacevole e una sensazione di sollievo.",
       sciatica: "Risolvere Problemi di Sciatica e Lombalgia",
@@ -89,22 +89,22 @@ const TRANSLATIONS = {
     faq: {
       title: "FAQs",
       items: [
-        { q: "Che cos'è WellUp™ Cintura?", a: "È un supporto lombare pneumatico progettato per decomprimere la colonna vertebrale e fornire sollievo immediato dal dolore." },
-        { q: "Quanto tempo devo indossare WellUp™ Cintura per vedere i risultati?", a: "Consigliamo l'uso per 2 ore al giorno. Molti utenti avvertono benefici già dalle prime due settimane." },
-        { q: "Ci sono effetti collaterali nell'utilizzo della WellUp™ Cintura?", a: "No, è un dispositivo non invasivo. Tuttavia, consulta sempre un medico per condizioni preesistenti gravi." },
-        { q: "WellUp™ Cintura può sostituire le visite dal chiropratico o altri trattamenti?", a: "Può essere un eccellente supporto complementare, ma non deve sostituire il parere clinico specialistico." },
-        { q: "Come funziona esattamente WellUp™ Cintura?", a: "Utilizza 52 colonne d'aria che, una volta gonfiate, sollevano delicatamente la parte superiore del corpo allontanandola dal bacino." }
+        { q: "Che cos'è Well Up Cintura?", a: "È un supporto lombare pneumatico progettato per decomprimere la colonna vertebrale e fornire sollievo immediato dal dolore." },
+        { q: "Quanto tempo devo indossare Well Up Cintura per vedere i risultati?", a: "Consigliamo l'uso per 2 ore al giorno. Molti utenti avvertono benefici già dalle prime due settimane." },
+        { q: "Ci sono effetti collaterali nell'utilizzo della Well Up Cintura?", a: "No, è un dispositivo non invasivo. Tuttavia, consulta sempre un medico per condizioni preesistenti gravi." },
+        { q: "Well Up Cintura può sostituire le visite dal chiropratico o altri trattamenti?", a: "Può essere un eccellente supporto complementare, ma non deve sostituire il parere clinico specialistico." },
+        { q: "Come funziona esattamente Well Up Cintura?", a: "Utilizza 52 colonne d'aria che, una volta gonfiate, sollevano delicatamente la parte superiore del corpo allontanandola dal bacino." }
       ]
     },
     aboutS: {
       title: "Chi Siamo",
       mission: "\"La nostra missione è ridefinire il benessere lombare attraverso l'innovazione tecnologica e il design ergonomico.\"",
       historyTitle: "La Nostra Storia",
-      history: "WellUp™ nasce dall'esigenza di offrire una soluzione reale e non invasiva a chi soffre di dolori cronici alla schiena. Abbiamo collaborato con esperti di biomeccanica per creare una cintura che non fosse solo un supporto, ma un vero sistema di decompressione portatile.",
-      whyWellupTitle: "Perché WellUp?",
-      whyWellup: "A differenza dei supporti tradizionali, la WellUp™ Cintura utilizza 52 colonne d'aria dinamiche. Questo approccio ad \"alta densità\" garantisce una distribuzione uniforme del peso e una decompressione millimetrica delle vertebre.",
+      history: "Well Up nasce dall'esigenza di offrire una soluzione reale e non invasiva a chi soffre di dolori cronici alla schiena. Abbiamo collaborato con esperti di biomeccanica per creare una cintura che non fosse solo un supporto, ma un vero sistema di decompressione portatile.",
+      whyWellupTitle: "Perché Well Up?",
+      whyWellup: "A differenza dei supporti tradizionali, la Well Up Cintura utilizza 52 colonne d'aria dinamiche. Questo approccio ad \"alta densità\" garantisce una distribuzione uniforme del peso e una decompressione millimetrica delle vertebre.",
       certTitle: "Certificazione di Qualità",
-      cert: "Ogni cintura WellUp™ è testata individualmente per mantenere una pressione costante di 0.2MPa per 24 ore."
+      cert: "Ogni cintura Well Up è testata individualmente per mantenere una pressione costante di 0.2MPa per 24 ore."
     },
     thankYou: {
       orderId: "Ordine",
@@ -136,7 +136,7 @@ const TRANSLATIONS = {
       howTitle: "Come Funziona?",
       howDesc: "Una volta confermato l'ordine tramite il nostro modulo, il prodotto verrà preparato e spedito entro 24 ore. Riceverai un codice di tracking via SMS.",
       safetyTitle: "Sicurezza dei Dati",
-      safetyDesc: "I tuoi dati sono protetti e crittografati. Li utilizziamo esclusivamente per finalizzare la consegna del tuo ordine WellUp™."
+      safetyDesc: "I tuoi dati sono protetti e crittografati. Li utilizziamo esclusivamente per finalizzare la consegna del tuo ordine Well Up."
     },
     contactDetailed: {
       title: "Contattaci",
@@ -153,7 +153,7 @@ const TRANSLATIONS = {
     },
     privacyDetailed: {
       title: "Privacy Policy",
-      content: "La tua privacy è importante per noi. Questa politica spiega come WellUp™ raccoglie, utilizza e protegge le tue informazioni personali quando visiti il nostro sito o effettui un ordine.",
+      content: "La tua privacy è importante per noi. Questa politica spiega come Well Up raccoglie, utilizza e protegge le tue informazioni personali quando visiti il nostro sito o effettui un ordine.",
       s1: {
         t: "1. Informazioni Raccolte",
         p: "Raccogliamo solo i dati necessari per elaborare il tuo ordine e fornirti il supporto necessario: Nome, Numero di Telefono, Indirizzo di Spedizione e Codice Postale."
@@ -169,10 +169,10 @@ const TRANSLATIONS = {
     },
     termsDetailed: {
       title: "Termini e Condizioni",
-      content: "Accedendo al sito WellUp™, accetti i seguenti termini e condizioni di utilizzo.",
+      content: "Accedendo al sito Well Up, accetti i seguenti termini e condizioni di utilizzo.",
       s1: {
         t: "1. Ordini e Pagamenti",
-        p: "WellUp™ opera esclusivamente tramite pagamento alla consegna (Contrassegno). L'ordine si considera finalizzato dopo la conferma telefonica da parte del nostro team."
+        p: "Well Up opera esclusivamente tramite pagamento alla consegna (Contrassegno). L'ordine si considera finalizzato dopo la conferma telefonica da parte del nostro team."
       },
       s2: {
         t: "2. Spedizione",
@@ -203,7 +203,7 @@ const TRANSLATIONS = {
   en: {
     nav: {
       home: "Home",
-      product: "WellUp™ Belt",
+      product: "Well Up Belt",
       about: "About Us",
       payment: "Payment Method",
       contact: "Contact Us"
@@ -220,7 +220,7 @@ const TRANSLATIONS = {
     },
     benefits: {
       title: "Experience Unparalleled Benefits",
-      desc: "The essence of WellUp™ Belt lies in its multifaceted benefits. Every aspect of our belt can bring a transformative change to your daily life through targeted compression.",
+      desc: "The essence of Well Up Belt lies in its multifaceted benefits. Every aspect of our belt can bring a transformative change to your daily life through targeted compression.",
       list: ["Immediate Relief", "Comfortable Design", "Sciatica & Back Pain", "Durability & Longevity"]
     },
     order: {
@@ -245,9 +245,9 @@ const TRANSLATIONS = {
       "🚚 FREE SHIPPING"
     ],
     features: {
-      title: "\"Instant Comfort and Durability: WellUp™ Belt\"",
+      title: "\"Instant Comfort and Durability: Well Up Belt\"",
       relief: "Immediate Relief",
-      reliefDesc: "The WellUp™ Belt offers rapid pain relief, quickly alleviating discomfort associated with issues like sciatica and lower back pain.",
+      reliefDesc: "The Well Up Belt offers rapid pain relief, quickly alleviating discomfort associated with issues like sciatica and lower back pain.",
       design: "Comfortable Design",
       designDesc: "Designed with an ergonomic shape, the belt ensures optimal comfort during daily use, allowing for a pleasant fit and a feeling of relief.",
       sciatica: "Solving Sciatica and Lower Back Problems",
@@ -264,22 +264,22 @@ const TRANSLATIONS = {
     faq: {
       title: "FAQs",
       items: [
-        { q: "What is the WellUp™ Belt?", a: "It is a pneumatic lumbar support designed to decompress the spine and provide immediate pain relief." },
-        { q: "How long should I wear the WellUp™ Belt to see results?", a: "We recommend using it for 2 hours a day. Many users feel benefits within the first two weeks." },
-        { q: "Are there any side effects to using the WellUp™ Belt?", a: "No, it is a non-invasive device. However, always consult a doctor for serious pre-existing conditions." },
-        { q: "Can the WellUp™ Belt replace chiropractor visits or other treatments?", a: "It can be an excellent complementary support, but should not replace clinical specialist advice." },
-        { q: "How exactly does the WellUp™ Belt work?", a: "It uses 52 air columns that, once inflated, gently lift the upper body away from the pelvis." }
+        { q: "What is the Well Up Belt?", a: "It is a pneumatic lumbar support designed to decompress the spine and provide immediate pain relief." },
+        { q: "How long should I wear the Well Up Belt to see results?", a: "We recommend using it for 2 hours a day. Many users feel benefits within the first two weeks." },
+        { q: "Are there any side effects to using the Well Up Belt?", a: "No, it is a non-invasive device. However, always consult a doctor for serious pre-existing conditions." },
+        { q: "Can the Well Up Belt replace chiropractor visits or other treatments?", a: "It can be an excellent complementary support, but should not replace clinical specialist advice." },
+        { q: "How exactly does the Well Up Belt work?", a: "It uses 52 air columns that, once inflated, gently lift the upper body away from the pelvis." }
       ]
     },
     aboutS: {
       title: "About Us",
       mission: "\"Our mission is to redefine lumbar wellness through technological innovation and ergonomic design.\"",
       historyTitle: "Our History",
-      history: "WellUp™ was born from the need to offer a real, non-invasive solution to those suffering from chronic back pain. We collaborated with biomechanics experts to create a belt that wasn't just a support, but a true portable decompression system.",
-      whyWellupTitle: "Why WellUp?",
-      whyWellup: "Unlike traditional supports, the WellUp™ Belt uses 52 dynamic air columns. This 'high density' approach ensures uniform weight distribution and millimeter decompression of the vertebrae.",
+      history: "Well Up was born from the need to offer a real, non-invasive solution to those suffering from chronic back pain. We collaborated with biomechanics experts to create a belt that wasn't just a support, but a true portable decompression system.",
+      whyWellupTitle: "Why Well Up?",
+      whyWellup: "Unlike traditional supports, the Well Up Belt uses 52 dynamic air columns. This 'high density' approach ensures uniform weight distribution and millimeter decompression of the vertebrae.",
       certTitle: "Quality Certification",
-      cert: "Each WellUp™ belt is individually tested to maintain a constant pressure of 0.2MPa for 24 hours."
+      cert: "Each Well Up belt is individually tested to maintain a constant pressure of 0.2MPa for 24 hours."
     },
     thankYou: {
       orderId: "Order",
@@ -311,7 +311,7 @@ const TRANSLATIONS = {
       howTitle: "How It Works?",
       howDesc: "Once the order is confirmed through our form, the product will be prepared and shipped within 24 hours. You will receive a tracking code via SMS.",
       safetyTitle: "Data Security",
-      safetyDesc: "Your data is protected and encrypted. We use it exclusively to finalize the delivery of your WellUp™ order."
+      safetyDesc: "Your data is protected and encrypted. We use it exclusively to finalize the delivery of your Well Up order."
     },
     contactDetailed: {
       title: "Contact Us",
@@ -328,7 +328,7 @@ const TRANSLATIONS = {
     },
     privacyDetailed: {
       title: "Privacy Policy",
-      content: "Your privacy is important to us. This policy explains how WellUp™ collects, uses, and protects your personal information when you visit our site or place an order.",
+      content: "Your privacy is important to us. This policy explains how Well Up collects, uses, and protects your personal information when you visit our site or place an order.",
       s1: {
         t: "1. Collected Information",
         p: "We only collect the data necessary to process your order: Name, Phone Number, Shipping Address, and ZIP Code."
@@ -344,10 +344,10 @@ const TRANSLATIONS = {
     },
     termsDetailed: {
       title: "Terms and Conditions",
-      content: "By accessing the WellUp™ site, you accept the following terms and conditions of use.",
+      content: "By accessing the Well Up site, you accept the following terms and conditions of use.",
       s1: {
         t: "1. Orders and Payments",
-        p: "WellUp™ operates exclusively through cash on delivery. The order is considered finalized after phone confirmation from our team."
+        p: "Well Up operates exclusively through cash on delivery. The order is considered finalized after phone confirmation from our team."
       },
       s2: {
         t: "2. Shipping",
@@ -378,7 +378,7 @@ const TRANSLATIONS = {
   fr: {
     nav: {
       home: "Accueil",
-      product: "Ceinture WellUp™",
+      product: "Ceinture Well Up",
       about: "À propos",
       payment: "Mode de paiement",
       contact: "Contactez-nous"
@@ -395,7 +395,7 @@ const TRANSLATIONS = {
     },
     benefits: {
       title: "Découvrez des avantages inégalés",
-      desc: "L'essence de la ceinture WellUp™ réside dans ses avantages multiples. Chaque aspect de notre ceinture peut apporter un changement transformateur dans votre vie quotidienne.",
+      desc: "L'essence de la ceinture Well Up réside dans ses avantages multiples. Chaque aspect de notre ceinture peut apporter un changement transformateur dans votre vie quotidienne.",
       list: ["Soulagement immédiat", "Conception confortable", "Sciatique et mal de dos", "Durabilité et longévité"]
     },
     order: {
@@ -420,9 +420,9 @@ const TRANSLATIONS = {
       "🚚 LIVRAISON GRATUITE"
     ],
     features: {
-      title: "\"Confort instantané et durabilité : Ceinture WellUp™\"",
+      title: "\"Confort instantané et durabilité : Ceinture Well Up\"",
       relief: "Soulagement immédiat",
-      reliefDesc: "La ceinture WellUp™ offre un soulagement rapide de la douleur, atténuant rapidement l'inconfort associé à des problèmes tels que la sciatique et les lombalgies.",
+      reliefDesc: "La ceinture Well Up offre un soulagement rapide de la douleur, atténuant rapidement l'inconfort associé à des problèmes tels que la sciatique et les lombalgies.",
       design: "Conception confortable",
       designDesc: "Conçue avec une forme ergonomique, la ceinture assure un confort optimal lors d'une utilisation quotidienne, permettant un ajustement agréable et une sensation de soulagement.",
       sciatica: "Résoudre les problèmes de sciatique et de zone lombaire",
@@ -439,22 +439,22 @@ const TRANSLATIONS = {
     faq: {
       title: "FAQs",
       items: [
-        { q: "Qu'est-ce que la ceinture WellUp™ ?", a: "C'est un support lombaire pneumatique conçu pour décomprimer la colonne vertébrale et soulager immédiatement la douleur." },
-        { q: "Combien de temps dois-je porter la ceinture WellUp™ pour voir des résultats ?", a: "Nous recommandons de l'utiliser 2 heures par jour. De nombreux utilisateurs ressentent des bénéfices dès les deux premières semaines." },
-        { q: "Y a-t-il des effets secondaires à l'utilisation de la ceinture WellUp™ ?", a: "Non, c'est un dispositif non invasif. Cependant, consultez toujours un médecin pour des conditions préexistantes graves." },
-        { q: "La ceinture WellUp™ peut-elle remplacer les visites chez le chiropracteur ?", a: "Elle peut être un excellent support complémentaire, mais ne doit pas remplacer un avis clinique spécialisé." },
-        { q: "Comment fonctionne exactement la ceinture WellUp™ ?", a: "Elle utilise 52 colonnes d'air qui, une fois gonflées, soulèvent délicatement le haut du corps en l'éloignant du bassin." }
+        { q: "Qu'est-ce que la ceinture Well Up ?", a: "C'est un support lombaire pneumatique conçu pour décomprimer la colonne vertébrale et soulager immédiatement la douleur." },
+        { q: "Combien de temps dois-je porter la ceinture Well Up pour voir des résultats ?", a: "Nous recommandons de l'utiliser 2 heures par jour. De nombreux utilisateurs ressentent des bénéfices dès les deux premières semaines." },
+        { q: "Y a-t-il des effets secondaires à l'utilisation de la ceinture Well Up ?", a: "Non, c'est un dispositif non invasif. Cependant, consultez toujours un médecin pour des conditions préexistantes graves." },
+        { q: "La ceinture Well Up peut-elle remplacer les visites chez le chiropracteur ?", a: "Elle peut être un excellent support complémentaire, mais ne doit pas remplacer un avis clinique spécialisé." },
+        { q: "Comment fonctionne exactement la ceinture Well Up ?", a: "Elle utilise 52 colonnes d'air qui, une fois gonflées, soulèvent délicatement le haut du corps en l'éloignant du bassin." }
       ]
     },
     aboutS: {
       title: "À propos de nous",
       mission: "\"Notre mission est de redéfinir le bien-être lombaire grâce à l'innovation technologique et à la conception ergonomique.\"",
       historyTitle: "Notre histoire",
-      history: "WellUp™ est né du besoin d'offrir une solution réelle et non invasive à ceux qui souffrent de maux de dos chroniques. Nous avons collaboré avec des experts en biomécanique pour créer une ceinture qui n'était pas seulement un support, mais un véritable système de décompression portable.",
-      whyWellupTitle: "Pourquoi WellUp ?",
-      whyWellup: "Contrairement aux supports traditionnels, la ceinture WellUp™ utilise 52 colonnes d'air dynamiques. Cette approche 'haute densité' assure une répartition uniforme du poids et une décompression millimétrique des vertèbres.",
+      history: "Well Up est né du besoin d'offrir une solution réelle et non invasive à ceux qui souffrent de maux de dos chroniques. Nous avons collaboré avec des experts en biomécanique pour créer une ceinture qui n'était pas seulement un support, mais un véritable système de décompression portable.",
+      whyWellupTitle: "Pourquoi Well Up ?",
+      whyWellup: "Contrairement aux supports traditionnels, la ceinture Well Up utilise 52 colonnes d'air dynamiques. Cette approche 'haute densité' assure une répartition uniforme du poids et une décompression millimétrique des vertèbres.",
       certTitle: "Certification de qualité",
-      cert: "Chaque ceinture WellUp™ est testée individuellement pour maintenir une pression constante de 0,2 MPa pendant 24 heures."
+      cert: "Chaque ceinture Well Up est testée individuellement pour maintenir une pression constante de 0,2 MPa pendant 24 heures."
     },
     thankYou: {
       orderId: "Commande",
@@ -486,7 +486,7 @@ const TRANSLATIONS = {
       howTitle: "Comment ça fonctionne ?",
       howDesc: "Une fois la commande confirmée via notre formulaire, le produit sera préparé et expédié sous 24 heures. Vous recevrez un code de suivi par SMS.",
       safetyTitle: "Sécurité des données",
-      safetyDesc: "Vos données sont protégées et cryptées. Nous les utilisons exclusivement pour finaliser la livraison de votre commande WellUp™."
+      safetyDesc: "Vos données sont protégées et cryptées. Nous les utilisons exclusivement pour finaliser la livraison de votre commande Well Up."
     },
     contactDetailed: {
       title: "Contactez-nous",
@@ -503,7 +503,7 @@ const TRANSLATIONS = {
     },
     privacyDetailed: {
       title: "Politique de confidentialité",
-      content: "Votre vie privée est importante pour nous. Cette politique explique comment WellUp™ collecte, utilise et protège vos informations personnelles lorsque vous visitez notre site ou passez une commande.",
+      content: "Votre vie privée est importante pour nous. Cette politique explique comment Well Up collecte, utilise et protège vos informations personnelles lorsque vous visitez notre site ou passez une commande.",
       s1: {
         t: "1. Informations collectées",
         p: "Nous ne collectons que les données nécessaires au traitement de votre commande : Nom, Numéro de téléphone, Adresse de livraison et Code postal."
@@ -519,10 +519,10 @@ const TRANSLATIONS = {
     },
     termsDetailed: {
       title: "Termes et conditions",
-      content: "En accédant au site WellUp™, vous acceptez les termes et conditions d'utilisation suivants.",
+      content: "En accédant au site Well Up, vous acceptez les termes et conditions d'utilisation suivants.",
       s1: {
         t: "1. Commandes et paiements",
-        p: "WellUp™ fonctionne exclusivement par paiement à la livraison. La commande est considérée comme finalisée après confirmation téléphonique de notre équipe."
+        p: "Well Up fonctionne exclusivement par paiement à la livraison. La commande est considérée comme finalisée après confirmation téléphonique de notre équipe."
       },
       s2: {
         t: "2. Expédition",
@@ -553,7 +553,7 @@ const TRANSLATIONS = {
   de: {
     nav: {
       home: "Startseite",
-      product: "WellUp™ Gürtel",
+      product: "Well Up Gürtel",
       about: "Über uns",
       payment: "Zahlungsmethode",
       contact: "Kontakt"
@@ -570,7 +570,7 @@ const TRANSLATIONS = {
     },
     benefits: {
       title: "Erleben Sie beispiellose Vorteile",
-      desc: "Das Wesen des WellUp™ Gürtels liegt in seinen vielfältigen Vorteilen. Jeder Aspekt unseres Gürtels kann durch gezielte Kompression lebensverändernd wirken.",
+      desc: "Das Wesen des Well Up Gürtels liegt in seinen vielfältigen Vorteilen. Jeder Aspekt unseres Gürtels kann durch gezielte Kompression lebensverändernd wirken.",
       list: ["Sofortige Linderung", "Komfortables Design", "Ischias & Rückenschmerzen", "Haltbarkeit & Langlebigkeit"]
     },
     order: {
@@ -595,9 +595,9 @@ const TRANSLATIONS = {
       "🚚 KOSTENLOSER VERSAND"
     ],
     features: {
-      title: "\"Sofortiger Komfort und Haltbarkeit: WellUp™ Gürtel\"",
+      title: "\"Sofortiger Komfort und Haltbarkeit: Well Up Gürtel\"",
       relief: "Sofortige Linderung",
-      reliefDesc: "Der WellUp™ Gürtel bietet eine schnelle Schmerzlinderung und lindert rasch Beschwerden, die mit Problemen wie Ischias und Schmerzen im unteren Rückenbereich verbunden sind.",
+      reliefDesc: "Der Well Up Gürtel bietet eine schnelle Schmerzlinderung und lindert rasch Beschwerden, die mit Problemen wie Ischias und Schmerzen im unteren Rückenbereich verbunden sind.",
       design: "Komfortables Design",
       designDesc: "Ergonomisch gestaltet, sorgt der Gürtel für optimalen Komfort bei täglichem Gebrauch und ermöglicht eine angenehme Passform und ein Gefühl der Erleichterung.",
       sciatica: "Lösung von Ischias- und Rückenproblemen",
@@ -614,22 +614,22 @@ const TRANSLATIONS = {
     faq: {
       title: "FAQs",
       items: [
-        { q: "Was ist der WellUp™ Gürtel?", a: "Es ist eine pneumatische Lendenwirbelstütze, die die Wirbelsäule dekomprimiert und sofortige Schmerzlinderung bietet." },
-        { q: "Wie lange sollte ich den WellUp™ Gürtel tragen, um Ergebnisse zu sehen?", a: "Wir empfehlen die Anwendung für 2 Stunden am Tag. Viele Anwender spüren bereits in den ersten zwei Wochen erste Vorteile." },
-        { q: "Gibt es Nebenwirkungen bei der Verwendung des WellUp™ Gürtels?", a: "Nein, es ist ein nicht-invasives Gerät. Konsultieren Sie jedoch bei schwerwiegenden Vorerkrankungen immer einen Arzt." },
-        { q: "Kann der WellUp™ Gürtel Besuche beim Chiropraktiker ersetzen?", a: "Er kann eine hervorragende ergänzende Unterstützung sein, sollte jedoch keinen klinischen Fachrat ersetzen." },
-        { q: "Wie genau funktioniert der WellUp™ Gürtel?", a: "Er verwendet 52 Luftsäulen, die nach dem Aufpumpen den Oberkörper sanft vom Becken wegheben." }
+        { q: "Was ist der Well Up Gürtel?", a: "Es ist eine pneumatische Lendenwirbelstütze, die die Wirbelsäule dekomprimiert und sofortige Schmerzlinderung bietet." },
+        { q: "Wie lange sollte ich den Well Up Gürtel tragen, um Ergebnisse zu sehen?", a: "Wir empfehlen die Anwendung für 2 Stunden am Tag. Viele Anwender spüren bereits in den ersten zwei Wochen erste Vorteile." },
+        { q: "Gibt es Nebenwirkungen bei der Verwendung des Well Up Gürtels?", a: "Nein, es ist ein nicht-invasives Gerät. Konsultieren Sie jedoch bei schwerwiegenden Vorerkrankungen immer einen Arzt." },
+        { q: "Kann der Well Up Gürtel Besuche beim Chiropraktiker ersetzen?", a: "Er kann eine hervorragende ergänzende Unterstützung sein, sollte jedoch keinen klinischen Fachrat ersetzen." },
+        { q: "Wie genau funktioniert der Well Up Gürtel?", a: "Er verwendet 52 Luftsäulen, die nach dem Aufpumpen den Oberkörper sanft vom Becken wegheben." }
       ]
     },
     aboutS: {
       title: "Über uns",
       mission: "\"Unsere Mission ist es, das Wohlbefinden im Lendenwirbelbereich durch technologische Innovation und ergonomisches Design neu zu definieren.\"",
       historyTitle: "Unsere Geschichte",
-      history: "WellUp™ entstand aus dem Bedürfnis heraus, Menschen mit chronischen Rückenschmerzen eine echte, nicht-invasive Lösung anzubieten. Wir haben mit Biomechanik-Experten zusammengearbeitet, um einen Gürtel zu entwickeln, der nicht nur eine Stütze, sondern ein echtes tragbares Dekompressionssystem ist.",
-      whyWellupTitle: "Warum WellUp?",
-      whyWellup: "Im Gegensatz zu herkömmlichen Stützen verwendet der WellUp™ Gürtel 52 dynamische Luftsäulen. Dieser 'High-Density'-Ansatz sorgt für eine gleichmäßige Gewichtsverteilung und eine millimetergenaue Dekompression der Wirbel.",
+      history: "Well Up entstand aus dem Bedürfnis heraus, Menschen mit chronischen Rückenschmerzen eine echte, nicht-invasive Lösung anzubieten. Wir haben mit Biomechanik-Experten zusammengearbeitet, um einen Gürtel zu entwickeln, der nicht nur eine Stütze, sondern ein echtes tragbares Dekompressionssystem ist.",
+      whyWellupTitle: "Warum Well Up?",
+      whyWellup: "Im Gegensatz zu herkömmlichen Stützen verwendet der Well Up Gürtel 52 dynamische Luftsäulen. Dieser 'High-Density'-Ansatz sorgt für eine gleichmäßige Gewichtsverteilung und eine millimetergenaue Dekompression der Wirbel.",
       certTitle: "Qualitätszertifizierung",
-      cert: "Jeder WellUp™ Gürtel wird einzeln getestet, um über 24 Stunden einen konstanten Druck von 0,2 MPa aufrechtzuerhalten."
+      cert: "Jeder Well Up Gürtel wird einzeln getestet, um über 24 Stunden einen konstanten Druck von 0,2 MPa aufrechtzuerhalten."
     },
     thankYou: {
       orderId: "Bestellung",
@@ -661,7 +661,7 @@ const TRANSLATIONS = {
       howTitle: "Wie funktioniert es?",
       howDesc: "Sobald die Bestellung über unser Formular bestätigt wurde, wird das Produkt innerhalb von 24 Stunden vorbereitet und versendet. Sie erhalten einen Tracking-Code per SMS.",
       safetyTitle: "Datensicherheit",
-      safetyDesc: "Ihre Daten sind geschützt und verschlüsselt. Wir verwenden sie ausschließlich zur Abwicklung der Lieferung Ihrer WellUp™ Bestellung."
+      safetyDesc: "Ihre Daten sind geschützt und verschlüsselt. Wir verwenden sie ausschließlich zur Abwicklung der Lieferung Ihrer Well Up Bestellung."
     },
     contactDetailed: {
       title: "Kontakt",
@@ -678,7 +678,7 @@ const TRANSLATIONS = {
     },
     privacyDetailed: {
       title: "Datenschutzbestimmungen",
-      content: "Ihr Datenschutz ist uns wichtig. In dieser Richtlinie wird erläutert, wie WellUp™ Ihre personenbezogenen Daten sammelt, verwendet und schützt, wenn Sie unsere Website besuchen oder eine Bestellung aufgeben.",
+      content: "Ihr Datenschutz ist uns wichtig. In dieser Richtlinie wird erläutert, wie Well Up Ihre personenbezogenen Daten sammelt, verwendet und schützt, wenn Sie unsere Website besuchen oder eine Bestellung aufgeben.",
       s1: {
         t: "1. Gesammelte Informationen",
         p: "Wir sammeln nur die für die Bearbeitung Ihrer Bestellung erforderlichen Daten: Name, Telefonnummer, Lieferadresse und Postleitzahl."
@@ -694,10 +694,10 @@ const TRANSLATIONS = {
     },
     termsDetailed: {
       title: "Allgemeine Geschäftsbedingungen",
-      content: "Durch den Zugriff auf die WellUp™ Website akzeptieren Sie die folgenden Nutzungsbedingungen.",
+      content: "Durch den Zugriff auf die Well Up Website akzeptieren Sie die folgenden Nutzungsbedingungen.",
       s1: {
         t: "1. Bestellungen und Zahlungen",
-        p: "WellUp™ arbeitet ausschließlich per Nachnahme. Die Bestellung gilt nach telefonischer Bestätigung durch unser Team als abgeschlossen."
+        p: "Well Up arbeitet ausschließlich per Nachnahme. Die Bestellung gilt nach telefonischer Bestätigung durch unser Team als abgeschlossen."
       },
       s2: {
         t: "2. Versand",
@@ -996,7 +996,7 @@ const BenefitsSection = () => {
     <section id="benefits" className="py-16 px-6 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-10 items-center border-b border-gray-100 pb-16">
           <div className="w-full md:w-1/3 aspect-square bg-gray-50 flex items-center justify-center rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <img src={IMAGES.productHero} alt="WellUp Cintura" className="max-h-full object-contain" />
+            <img src={IMAGES.productHero} alt="Well Up Cintura" className="max-h-full object-contain" />
           </div>
           <div className="flex-1 space-y-6">
             <h2 className="text-base md:text-lg font-black uppercase tracking-wider text-brand-dark">{t.benefits.title}</h2>
@@ -1057,7 +1057,7 @@ const ThankYouPage = ({ name, total }: { name: string, total: string }) => {
             <div className="space-y-4">
               <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-widest">{t.thankYou.summary}</h4>
               <div className="flex justify-between items-center text-sm font-bold text-brand-dark">
-                <span>WellUp™ Cintura</span>
+                <span>Well Up Cintura</span>
                 <span>{total}</span>
               </div>
               <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
@@ -1111,11 +1111,11 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
   };
 
   const gallery = [
-    { src: IMAGES.hero, alt: "WellUp Comfort" },
-    { src: IMAGES.productHero, alt: "WellUp Cintura Hero" },
+    { src: IMAGES.hero, alt: "Well Up Comfort" },
+    { src: IMAGES.productHero, alt: "Well Up Cintura Hero" },
     { src: IMAGES.productHowTo, alt: "Come usare la cintura" },
     { src: IMAGES.productLifestyle, alt: "Lifestyle uso cintura" },
-    { src: IMAGES.useCasePain, alt: "WellUp In Uso" }
+    { src: IMAGES.useCasePain, alt: "Well Up In Uso" }
   ];
 
   const Accordion = ({ title, children }: { title: string, children: ReactNode }) => {
@@ -1177,7 +1177,7 @@ const ProductPage = ({ onOrderSuccess, onAddToCart }: { onOrderSuccess: (name: s
         <div className="flex flex-col">
           <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
             <div className="w-full">
-              <h2 className="text-3xl md:text-4xl font-black text-brand-blue uppercase leading-[1.1]">WellUp™ Cintura</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-brand-blue uppercase leading-[1.1]">Well Up Cintura</h2>
               <div className="flex items-center gap-2 mt-3">
                 <div className="text-orange-400 text-sm">⭐⭐⭐⭐⭐</div>
                 <span className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">{t.reviews.count}</span>
@@ -1362,7 +1362,7 @@ const FeaturesBanner = () => {
 
         <div className="flex justify-center">
           <div className="bg-white p-6 rounded-[2rem] shadow-2xl overflow-hidden">
-            <img src={IMAGES.productBox} alt="WellUp Box" className="w-full max-w-sm" />
+            <img src={IMAGES.productBox} alt="Well Up Box" className="w-full max-w-sm" />
           </div>
         </div>
 
@@ -1704,7 +1704,7 @@ const CartDrawer = ({ isOpen, onClose, quantity, setQuantity, onCheckout }: { is
                   </div>
                   <div className="flex-1 space-y-2">
                     <div className="flex justify-between items-start">
-                      <h3 className="text-sm font-black text-brand-dark uppercase tracking-tight">WellUp™ Cintura</h3>
+                      <h3 className="text-sm font-black text-brand-dark uppercase tracking-tight">Well Up Cintura</h3>
                       <button onClick={() => setQuantity(0)} className="text-gray-400 hover:text-red-500">
                         <X className="w-4 h-4" />
                       </button>
@@ -1773,7 +1773,7 @@ const Footer = ({ setActivePage }: { setActivePage: (p: string) => void }) => {
             />
             <span className="text-xl font-bold text-white tracking-widest uppercase">Wellup</span>
           </div>
-          <p className="text-white/50 text-xs tracking-tight">© 2026 WellUp™ Cintura. {t.footerDetailed.rights}</p>
+          <p className="text-white/50 text-xs tracking-tight">© 2026 Well Up Cintura. {t.footerDetailed.rights}</p>
         </div>
         <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/70 text-xs font-medium uppercase tracking-widest">
           <button id="footer-privacy-link" onClick={() => setActivePage('privacy')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.privacy}</button>
