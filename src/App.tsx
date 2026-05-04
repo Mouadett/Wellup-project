@@ -22,6 +22,7 @@ import {
   Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Routes, Route, Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 
 // --- Translations ---
 const TRANSLATIONS = {
@@ -744,8 +745,10 @@ const useLanguage = () => {
 };
 
 const LanguageSelector = () => {
-  const { lang, setLang } = useLanguage();
+  const { lang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const languages = [
     { code: 'it', name: 'Italiano', flag: '🇮🇹' },
@@ -755,6 +758,14 @@ const LanguageSelector = () => {
   ] as const;
 
   const currentLang = languages.find(l => l.code === lang) || languages[0];
+
+  const changeLanguage = (newLangCode: string) => {
+    const currentBase = location.pathname.replace(/^\/(eng|fr|de)/, '');
+    const prefix = newLangCode === 'it' ? '' : newLangCode === 'en' ? '/eng' : `/${newLangCode}`;
+    const newPath = `${prefix}${currentBase || (prefix ? '' : '/')}`;
+    navigate(newPath);
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative">
@@ -777,10 +788,7 @@ const LanguageSelector = () => {
             {languages.map((l) => (
               <button
                 key={l.code}
-                onClick={() => {
-                  setLang(l.code);
-                  setIsOpen(false);
-                }}
+                onClick={() => changeLanguage(l.code)}
                 className={`w-full flex items-center justify-between px-4 py-3 text-sm font-bold uppercase transition-all rounded-lg ${lang === l.code ? 'bg-brand-blue/5 text-brand-blue' : 'hover:bg-gray-50 text-brand-dark'}`}
               >
                 <div className="flex items-center gap-3">
@@ -847,17 +855,34 @@ const AnnouncementBar = () => {
   );
 };
 
-const Navbar = ({ activePage, setActivePage, cartQuantity, onCartClick }: { activePage: string, setActivePage: (p: string) => void, cartQuantity: number, onCartClick: () => void }) => {
+const Navbar = ({ cartQuantity, onCartClick }: { cartQuantity: number, onCartClick: () => void }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const location = useLocation();
+
+  const getLocalizedPath = (path: string) => {
+    const prefix = lang === 'it' ? '' : lang === 'en' ? '/eng' : `/${lang}`;
+    if (path === '/') return prefix || '/';
+    return `${prefix}${path}`;
+  };
 
   const navLinks = [
-    { id: 'home', label: t.nav.home },
-    { id: 'product', label: t.nav.product },
-    { id: 'about', label: t.nav.about },
-    { id: 'payment', label: t.nav.payment },
-    { id: 'contact', label: t.nav.contact }
+    { id: 'home', label: t.nav.home, path: '/' },
+    { id: 'product', label: t.nav.product, path: '/product' },
+    { id: 'about', label: t.nav.about, path: '/about' },
+    { id: 'payment', label: t.nav.payment, path: '/payment' },
+    { id: 'contact', label: t.nav.contact, path: '/contact' }
   ];
+
+  const currentPageMatch = (path: string) => {
+    // Basic match check
+    const current = location.pathname;
+    const localized = getLocalizedPath(path);
+    if (path === '/') {
+       return current === '/' || current === '/eng' || current === '/fr' || current === '/de';
+    }
+    return current.endsWith(path);
+  };
 
   return (
     <nav className="h-16 sticky top-0 z-50 bg-white border-b border-gray-100 px-4 md:px-6 flex items-center justify-between shadow-sm">
@@ -865,24 +890,24 @@ const Navbar = ({ activePage, setActivePage, cartQuantity, onCartClick }: { acti
         <button id="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 -ml-2">
           <Menu className="w-6 h-6 text-brand-dark" />
         </button>
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActivePage('home')}>
+        <Link to={getLocalizedPath('/')} className="flex items-center gap-2">
           <img 
             src="https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Logo%20svg.svg" 
             alt="Wellup Logo" 
             className="h-8 w-auto"
           />
-        </div>
+        </Link>
       </div>
 
       <div className="hidden md:flex items-center gap-6 text-[13px] font-medium">
         {navLinks.map(link => (
-          <button
+          <Link
             key={link.id}
-            onClick={() => setActivePage(link.id)}
-            className={`transition-colors h-full flex items-center px-4 py-1.5 rounded-full ${activePage === link.id ? 'bg-brand-blue text-white' : 'hover:text-brand-blue'}`}
+            to={getLocalizedPath(link.path)}
+            className={`transition-colors h-full flex items-center px-4 py-1.5 rounded-full ${currentPageMatch(link.path) ? 'bg-brand-blue text-white' : 'hover:text-brand-blue shadow-none hover:shadow-none bg-transparent'}`}
           >
             {link.label}
-          </button>
+          </Link>
         ))}
       </div>
 
@@ -913,13 +938,14 @@ const Navbar = ({ activePage, setActivePage, cartQuantity, onCartClick }: { acti
             </div>
             <div className="flex flex-col gap-6">
               {navLinks.map(link => (
-                <button
+                <Link
                   key={link.id}
-                  onClick={() => { setActivePage(link.id); setIsMobileMenuOpen(false); }}
-                  className={`text-left text-lg font-bold border-b border-gray-100 pb-2 ${activePage === link.id ? 'text-brand-blue' : 'text-brand-dark'}`}
+                  to={getLocalizedPath(link.path)}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-left text-lg font-bold border-b border-gray-100 pb-2 ${currentPageMatch(link.path) ? 'text-brand-blue' : 'text-brand-dark'}`}
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
             </div>
           </motion.div>
@@ -1414,7 +1440,7 @@ const StatsSection = () => {
               className="text-gray-100"
             />
             {/* Progress Circle */}
-            <circle
+            <motion.circle
               cx="48"
               cy="48"
               r={radius}
@@ -1427,7 +1453,7 @@ const StatsSection = () => {
               animate={{ strokeDashoffset: offset }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               className={colorClass}
-              style={{ strokeDashoffset: offset, transition: 'stroke-dashoffset 1.5s ease-in-out' }}
+              style={{ transition: 'stroke-dashoffset 1.5s ease-in-out' }}
             />
           </svg>
           <span className="absolute text-lg font-black text-brand-dark">{percentage}%</span>
@@ -1804,26 +1830,32 @@ const CartDrawer = ({ isOpen, onClose, quantity, setQuantity, onCheckout }: { is
   );
 };
 
-const Footer = ({ setActivePage }: { setActivePage: (p: string) => void }) => {
-  const { t } = useLanguage();
+const Footer = () => {
+  const { t, lang } = useLanguage();
+  const getLocalizedPath = (path: string) => {
+    const prefix = lang === 'it' ? '' : lang === 'en' ? '/eng' : `/${lang}`;
+    if (path === '/') return prefix || '/';
+    return `${prefix}${path}`;
+  };
+
   return (
     <footer className="bg-brand-blue py-12 px-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex flex-col items-center md:items-start gap-4">
-           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActivePage('home')}>
+           <Link to={getLocalizedPath('/')} className="flex items-center gap-2">
              <img 
               src="https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Logo%20svg.svg" 
               alt="Wellup Logo" 
               className="h-6 w-auto brightness-0 invert"
             />
             <span className="text-xl font-bold text-white tracking-widest uppercase">Wellup</span>
-          </div>
+          </Link>
           <p className="text-white/50 text-xs tracking-tight">© 2026 Well Up Cintura. {t.footerDetailed.rights}</p>
         </div>
         <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/70 text-xs font-medium uppercase tracking-widest">
-          <button id="footer-privacy-link" onClick={() => setActivePage('privacy')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.privacy}</button>
-          <button id="footer-terms-link" onClick={() => setActivePage('termini')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.terms}</button>
-          <button id="footer-contact-link" onClick={() => setActivePage('contact')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.contact}</button>
+          <Link to={getLocalizedPath('/privacy')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.privacy}</Link>
+          <Link to={getLocalizedPath('/termini')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.terms}</Link>
+          <Link to={getLocalizedPath('/contact')} className="hover:text-white transition-colors py-2 px-1">{t.footerDetailed.contact}</Link>
         </div>
       </div>
     </footer>
@@ -1831,6 +1863,9 @@ const Footer = ({ setActivePage }: { setActivePage: (p: string) => void }) => {
 };
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [lang, setLang] = useState<Language>(() => {
     const path = window.location.pathname;
     if (path.startsWith('/eng')) return 'en';
@@ -1839,21 +1874,32 @@ export default function LandingPage() {
     return 'it';
   });
 
-  const [activePage, setActivePage] = useState('home');
   const [orderInfo, setOrderInfo] = useState<{ name: string, total: string } | null>(null);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  const getLocalizedPath = (path: string, l = lang) => {
+    const prefix = l === 'it' ? '' : l === 'en' ? '/eng' : `/${l}`;
+    if (path === '/') return prefix || '/';
+    return `${prefix}${path}`;
+  };
+
   useEffect(() => {
-    const langPrefix = lang === 'it' ? '' : lang === 'en' ? '/eng' : `/${lang}`;
-    if (window.location.pathname !== langPrefix && (langPrefix !== '' || window.location.pathname !== '/')) {
-      window.history.pushState(null, '', langPrefix || '/');
+    // Sync language state with URL if it changes externally or on mount
+    const path = location.pathname;
+    let newLang: Language = 'it';
+    if (path.startsWith('/eng')) newLang = 'en';
+    else if (path.startsWith('/fr')) newLang = 'fr';
+    else if (path.startsWith('/de')) newLang = 'de';
+    
+    if (newLang !== lang) {
+      setLang(newLang);
     }
-  }, [lang]);
+  }, [location.pathname]);
 
   const handleOrderSuccess = (name: string, total: string) => {
     setOrderInfo({ name, total });
-    setActivePage('success');
+    navigate(getLocalizedPath('/success'));
   };
 
   const handleAddToCart = (q: number) => {
@@ -1861,49 +1907,72 @@ export default function LandingPage() {
     setIsCartOpen(true);
   };
 
-  const renderPage = () => {
-    if (orderInfo && activePage === 'success') {
-      return <ThankYouPage name={orderInfo.name} total={orderInfo.total} />;
-    }
+  const HomeRoutes = () => (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <HeroSection onCtaClick={() => navigate(getLocalizedPath('/product'))} />
+      <TrustTicker />
+      <BenefitsSection />
+      <StatsSection />
+      <UseCaseTabs />
+      <FeaturesBanner />
+      <ReviewsSection />
+      <FAQSection />
+    </motion.div>
+  );
 
-    switch (activePage) {
-      case 'about': return <AboutUs />;
-      case 'payment': return <PaymentMethod />;
-      case 'contact': return <ContactUs />;
-      case 'privacy': return <PrivacyPolicy />;
-      case 'termini': return <Termini />;
-      case 'product':
-        return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <ProductPage onOrderSuccess={handleOrderSuccess} onAddToCart={handleAddToCart} />
-            <FeaturesBanner />
-            <StatsSection />
-            <FAQSection />
-          </motion.div>
-        );
-      default:
-        return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <HeroSection onCtaClick={() => setActivePage('product')} />
-            <TrustTicker />
-            <BenefitsSection />
-            <StatsSection />
-            <UseCaseTabs />
-            <FeaturesBanner />
-            <ReviewsSection />
-            <FAQSection />
-          </motion.div>
-        );
-    }
-  };
+  const ProductRoutes = () => (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <ProductPage onOrderSuccess={handleOrderSuccess} onAddToCart={handleAddToCart} />
+      <FeaturesBanner />
+      <StatsSection />
+      <FAQSection />
+    </motion.div>
+  );
+
+  const AppRoutes = () => (
+    <Routes>
+      {/* Root redirects or layouts depending on lang prefix */}
+      {['/', '/eng', '/fr', '/de'].map(p => (
+        <Route key={p} path={p} element={<HomeRoutes />} />
+      ))}
+      
+      {['/product', '/eng/product', '/fr/product', '/de/product'].map(p => (
+        <Route key={p} path={p} element={<ProductRoutes />} />
+      ))}
+
+      {['/about', '/eng/about', '/fr/about', '/de/about'].map(p => (
+        <Route key={p} path={p} element={<AboutUs />} />
+      ))}
+
+      {['/payment', '/eng/payment', '/fr/payment', '/de/payment'].map(p => (
+        <Route key={p} path={p} element={<PaymentMethod />} />
+      ))}
+
+      {['/contact', '/eng/contact', '/fr/contact', '/de/contact'].map(p => (
+        <Route key={p} path={p} element={<ContactUs />} />
+      ))}
+
+      {['/privacy', '/eng/privacy', '/fr/privacy', '/de/privacy'].map(p => (
+        <Route key={p} path={p} element={<PrivacyPolicy />} />
+      ))}
+
+      {['/termini', '/eng/termini', '/fr/termini', '/de/termini'].map(p => (
+        <Route key={p} path={p} element={<Termini />} />
+      ))}
+
+      {['/success', '/eng/success', '/fr/success', '/de/success'].map(p => (
+        <Route key={p} path={p} element={orderInfo ? <ThankYouPage name={orderInfo.name} total={orderInfo.total} /> : <Navigate to="/" />} />
+      ))}
+
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, t: TRANSLATIONS[lang] || TRANSLATIONS.it }}>
       <div className="min-h-screen bg-white font-sans text-brand-dark overflow-x-hidden">
         <AnnouncementBar />
         <Navbar 
-          activePage={activePage} 
-          setActivePage={setActivePage} 
           cartQuantity={cartQuantity}
           onCartClick={() => setIsCartOpen(true)}
         />
@@ -1915,17 +1984,17 @@ export default function LandingPage() {
           setQuantity={setCartQuantity}
           onCheckout={() => {
             setIsCartOpen(false);
-            setActivePage('product');
+            navigate(getLocalizedPath('/product'));
             setTimeout(() => {
               document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            }, 500);
           }}
         />
 
         <main>
-          {renderPage()}
+          <AppRoutes />
         </main>
-        <Footer setActivePage={setActivePage} />
+        <Footer />
       </div>
     </LanguageContext.Provider>
   );
