@@ -1450,7 +1450,6 @@ const StatsSection = () => {
         <StatsRing percentage={90} colorClass="border-brand-blue/10 text-brand-blue" text={t.stats.s2} />
         <StatsRing percentage={75} colorClass="border-brand-blue/10 text-brand-blue" text={t.stats.s3} />
       </div>
-      <p className="text-[10px] text-gray-400 mt-12 font-medium uppercase tracking-[0.2em]">Caption about the results and/or link for their proof.</p>
     </section>
   );
 };
