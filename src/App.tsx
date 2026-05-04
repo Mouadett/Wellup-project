@@ -1394,27 +1394,48 @@ const FeaturesBanner = () => {
 
 const StatsSection = () => {
   const { t } = useLanguage();
-  const StatsRing = ({ percentage, text, colorClass }: { percentage: number, text: string, colorClass: string }) => (
-    <div className="flex items-center gap-8 py-8 border-b border-gray-100 last:border-0 group">
-      <div className={`relative w-20 h-20 rounded-full border-[6px] ${colorClass} flex items-center justify-center text-lg font-black bg-white flex-shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-110`}>
-        <svg className="absolute inset-0 w-full h-full -rotate-90">
-          <circle
-            cx="40"
-            cy="40"
-            r="34"
-            stroke="currentColor"
-            strokeWidth="6"
-            fill="transparent"
-            strokeDasharray={213.6}
-            strokeDashoffset={213.6 * (1 - percentage / 100)}
-            className="opacity-100"
-          />
-        </svg>
-        <span className="relative z-10">{percentage}%</span>
+  const StatsRing = ({ percentage, text, colorClass }: { percentage: number, text: string, colorClass: string }) => {
+    const radius = 36;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage / 100) * circumference;
+
+    return (
+      <div className="flex items-center gap-8 py-8 border-b border-gray-100 last:border-0 group">
+        <div className="relative w-24 h-24 flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105">
+          <svg className="w-full h-full -rotate-90">
+            {/* Background Circle (Track) */}
+            <circle
+              cx="48"
+              cy="48"
+              r={radius}
+              stroke="currentColor"
+              strokeWidth="6"
+              fill="transparent"
+              className="text-gray-100"
+            />
+            {/* Progress Circle */}
+            <circle
+              cx="48"
+              cy="48"
+              r={radius}
+              stroke="currentColor"
+              strokeWidth="6"
+              strokeLinecap="round"
+              fill="transparent"
+              strokeDasharray={circumference}
+              initial={{ strokeDashoffset: circumference }}
+              animate={{ strokeDashoffset: offset }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className={colorClass}
+              style={{ strokeDashoffset: offset, transition: 'stroke-dashoffset 1.5s ease-in-out' }}
+            />
+          </svg>
+          <span className="absolute text-lg font-black text-brand-dark">{percentage}%</span>
+        </div>
+        <p className="text-sm md:text-base leading-relaxed font-bold text-gray-600 max-w-2xl">{text}</p>
       </div>
-      <p className="text-sm md:text-base leading-relaxed font-bold text-gray-600 max-w-2xl">{text}</p>
-    </div>
-  );
+    );
+  };
 
   return (
     <section id="stats" className="bg-white py-16 px-6 max-w-5xl mx-auto">
