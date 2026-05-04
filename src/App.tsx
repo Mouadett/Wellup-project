@@ -81,7 +81,7 @@ const TRANSLATIONS = {
       durabilityDesc: "Realizzata con materiali di alta qualità, la cintura è progettata per resistere a un utilizzo prolungato nel tempo, garantendo una durata eccezionale e una performance affidabile nel tempo."
     },
     stats: {
-      title: "Guarisci Come Non Mai 💗",
+      title: "Guarisci Come Non Mai",
       s1: "Sollievo immediato tra i pazienti con mal di schiena e sciatica.",
       s2: "Sciatica eliminata in sole 2 settimane d'uso costante.",
       s3: "Mal di schiena cronico risolto dopo 14 giorni di trattamento."
@@ -256,7 +256,7 @@ const TRANSLATIONS = {
       durabilityDesc: "Made with high-quality materials, the belt is designed to withstand prolonged use over time, ensuring exceptional durability and reliable performance."
     },
     stats: {
-      title: "Heal Like Never Before 💗",
+      title: "Heal Like Never Before",
       s1: "Immediate relief among patients with back pain and sciatica.",
       s2: "Sciatica eliminated in just 2 weeks of consistent use.",
       s3: "Chronic back pain resolved after 14 days of treatment."
@@ -431,7 +431,7 @@ const TRANSLATIONS = {
       durabilityDesc: "Fabriquée avec des matériaux de haute qualité, la ceinture est conçue pour résister à une utilisation prolongée dans le temps, garantissant une durabilité exceptionnelle et des performances fiables."
     },
     stats: {
-      title: "Guérissez comme jamais auparavant 💗",
+      title: "Guérissez comme jamais auparavant",
       s1: "Soulagement immédiat chez les patients souffrant de maux de dos et de sciatique.",
       s2: "Sciatique éliminée en seulement 2 semaines d'utilisation constante.",
       s3: "Maux de dos chroniques résolus après 14 jours de traitement."
@@ -606,7 +606,7 @@ const TRANSLATIONS = {
       durabilityDesc: "Hergestellt aus hochwertigen Materialien, ist der Gürtel für eine längere Nutzung über die Zeit konzipiert und gewährleistet eine außergewöhnliche Haltbarkeit und zuverlässige Leistung."
     },
     stats: {
-      title: "Heilen Sie wie nie zuvor 💗",
+      title: "Heilen Sie wie nie zuvor",
       s1: "Sofortige Linderung bei Patienten mit Rückenschmerzen und Ischias.",
       s2: "Ischias in nur 2 Wochen konsequenter Anwendung eliminiert.",
       s3: "Chronische Rückenschmerzen nach 14 Tagen Behandlung behoben."
@@ -800,12 +800,15 @@ const LanguageSelector = () => {
 // Images based on the request (simulated URLs or using the provided descriptions)
 const IMAGES = {
   hero: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Hero%20image.jpg",
-  productHero: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/s-l1600%20(6).jpg",
+  productHero: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/ceinture-lombaire-gonflable-1.webp",
   productLifestyle: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/women%20on%20a%20couch.jpg",
   productHowTo: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Steps.png",
   productDiagram: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/9804c865-c7e4-474c-4a37-674b971a5c00/public",
   productStructure: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/6e838641-4796-41b4-2195-207907572700/public",
-  productBox: "https://imagedelivery.net/az7A-j5Hj99v9EIn9p71zQ/e0777995-1f95-46fd-4be0-a3399e578c00/public",
+  productBox: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/ceinture-lombaire-gonflable-1.webp",
+  useCaseSciatica: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Sciatica.webp",
+  useCaseSedentary: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/sedentary%20work.jpg",
+  useCaseActive: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/active%20work%20a.webp",
   useCasePain: "https://zbchgawobsnnegnsmuyc.supabase.co/storage/v1/object/public/Wellup%20Project/Use.png",
   reviewGrid: [
     "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400",
@@ -1296,6 +1299,13 @@ const UseCaseTabs = () => {
   const [activeTab, setActiveTab] = useState(t.useCases.tabs[0]);
   const tabs = t.useCases.tabs;
   
+  const getUseCaseImage = (tab: string) => {
+    if (tab === tabs[0]) return IMAGES.useCaseSciatica;
+    if (tab === tabs[1]) return IMAGES.useCaseSedentary;
+    if (tab === tabs[2]) return IMAGES.useCaseActive;
+    return IMAGES.useCasePain;
+  };
+
   return (
     <motion.section 
       initial={{ opacity: 0, y: 50 }}
@@ -1318,11 +1328,12 @@ const UseCaseTabs = () => {
       <div className="grid md:grid-cols-2 items-center gap-12 bg-white p-6 md:p-12 rounded-3xl shadow-sm border border-gray-100">
         <motion.div 
           key={activeTab}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
           className="relative group cursor-zoom-in"
         >
-          <img src={IMAGES.useCasePain} alt="Dolore" className="rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700 w-full" />
+          <img src={getUseCaseImage(activeTab)} alt={activeTab} className="rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700 w-full aspect-video object-cover" />
           <div className="absolute top-4 left-4 bg-black/20 p-2 rounded-full backdrop-blur-sm"><Search className="w-5 h-5 text-white" /></div>
         </motion.div>
         <motion.div 
@@ -1384,27 +1395,41 @@ const FeaturesBanner = () => {
 const StatsSection = () => {
   const { t } = useLanguage();
   const StatsRing = ({ percentage, text, colorClass }: { percentage: number, text: string, colorClass: string }) => (
-    <div className="flex items-center gap-6 p-4 bg-white md:bg-transparent rounded-2xl shadow-sm md:shadow-none border md:border-0 border-gray-100">
-      <div className={`w-16 h-16 rounded-full border-[6px] ${colorClass} flex items-center justify-center text-base font-black bg-white flex-shrink-0 shadow-sm`}>
-        {percentage}%
+    <div className="flex items-center gap-8 py-8 border-b border-gray-100 last:border-0 group">
+      <div className={`relative w-20 h-20 rounded-full border-[6px] ${colorClass} flex items-center justify-center text-lg font-black bg-white flex-shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-110`}>
+        <svg className="absolute inset-0 w-full h-full -rotate-90">
+          <circle
+            cx="40"
+            cy="40"
+            r="34"
+            stroke="currentColor"
+            strokeWidth="6"
+            fill="transparent"
+            strokeDasharray={213.6}
+            strokeDashoffset={213.6 * (1 - percentage / 100)}
+            className="opacity-100"
+          />
+        </svg>
+        <span className="relative z-10">{percentage}%</span>
       </div>
-      <p className="text-xs md:text-sm leading-tight font-semibold text-gray-700">{text}</p>
+      <p className="text-sm md:text-base leading-relaxed font-bold text-gray-600 max-w-2xl">{text}</p>
     </div>
   );
 
   return (
-    <section id="stats" className="bg-gray-50 border-t border-gray-200 py-16 px-6">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-2xl font-black text-brand-dark mb-12 uppercase tracking-widest leading-tight">
+    <section id="stats" className="bg-white py-16 px-6 max-w-5xl mx-auto">
+      <div className="flex items-center gap-4 mb-12">
+        <h2 className="text-3xl md:text-4xl font-black text-brand-dark uppercase tracking-tight leading-tight">
           {t.stats.title}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 text-left">
-          <StatsRing percentage={95} colorClass="border-brand-blue text-brand-blue" text={t.stats.s1} />
-          <StatsRing percentage={90} colorClass="border-brand-green text-brand-green" text={t.stats.s2} />
-          <StatsRing percentage={75} colorClass="border-orange-400 text-orange-400" text={t.stats.s3} />
-        </div>
-        <p className="text-[10px] text-gray-300 mt-12 italic uppercase tracking-widest">Caption about the results and/or link for their proof.</p>
+        <span className="text-3xl">💝</span>
       </div>
+      <div className="flex flex-col">
+        <StatsRing percentage={95} colorClass="border-brand-blue/10 text-brand-blue" text={t.stats.s1} />
+        <StatsRing percentage={90} colorClass="border-brand-blue/10 text-brand-blue" text={t.stats.s2} />
+        <StatsRing percentage={75} colorClass="border-brand-blue/10 text-brand-blue" text={t.stats.s3} />
+      </div>
+      <p className="text-[10px] text-gray-400 mt-12 font-medium uppercase tracking-[0.2em]">Caption about the results and/or link for their proof.</p>
     </section>
   );
 };
@@ -1832,6 +1857,7 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <ProductPage onOrderSuccess={handleOrderSuccess} onAddToCart={handleAddToCart} />
             <FeaturesBanner />
+            <StatsSection />
             <FAQSection />
           </motion.div>
         );
