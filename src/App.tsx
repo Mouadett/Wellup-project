@@ -1896,37 +1896,60 @@ const NotFound = () => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center"
+      className="min-h-[80vh] flex flex-col items-center justify-center px-6 text-center relative overflow-hidden"
     >
+      {/* Decorative background elements */}
+      <div className="absolute top-1/4 -left-10 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 -right-10 w-64 h-64 bg-brand-blue/10 rounded-full blur-3xl animate-pulse delay-700" />
+      
       <motion.div
-        initial={{ scale: 0.8, rotate: -10 }}
-        animate={{ scale: 1, rotate: 0 }}
+        initial={{ scale: 0.8, rotate: -5, y: 20 }}
+        animate={{ scale: 1, rotate: 0, y: 0 }}
         transition={{ 
           type: "spring",
           stiffness: 260,
           damping: 20 
         }}
-        className="relative mb-8"
+        className="relative mb-12"
       >
-        <div className="text-[120px] md:text-[180px] font-black text-gray-50 leading-none select-none">404</div>
+        <div className="text-[140px] md:text-[220px] font-black text-gray-50/80 leading-none select-none tracking-tighter">
+          404
+        </div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <Search className="w-20 h-20 md:w-32 md:32 text-brand-blue opacity-20 animate-pulse" />
+          <motion.div
+            animate={{ 
+              y: [0, -10, 0],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{ 
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Search className="w-24 h-24 md:w-36 h-36 text-brand-blue opacity-30" />
+          </motion.div>
         </div>
       </motion.div>
       
-      <h1 className="text-3xl md:text-4xl font-black text-brand-dark uppercase tracking-tighter mb-4">
-        {t.notFound.title}
-      </h1>
-      <p className="text-gray-500 max-w-md mb-10 font-medium">
-        {t.notFound.message}
-      </p>
-      
-      <button 
-        onClick={() => navigate(getLocalizedPath('/'))}
-        className="bg-brand-blue text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-sm shadow-xl shadow-brand-blue/20 hover:scale-105 transition-transform active:scale-95"
-      >
-        {t.notFound.backHome}
-      </button>
+      <div className="relative z-10">
+        <h1 className="text-4xl md:text-5xl font-black text-brand-dark uppercase tracking-tight mb-4 max-w-xl mx-auto">
+          {t.notFound.title}
+        </h1>
+        <p className="text-gray-500 max-w-md mb-12 font-medium text-lg md:text-xl">
+          {t.notFound.message}
+        </p>
+        
+        <button 
+          onClick={() => navigate(getLocalizedPath('/'))}
+          className="group relative bg-brand-blue text-white px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm shadow-2xl shadow-brand-blue/30 overflow-hidden"
+        >
+          <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1 block">
+            {t.notFound.backHome}
+          </span>
+          <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+        </button>
+      </div>
     </motion.div>
   );
 };
