@@ -10,6 +10,11 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  // Add health check
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', uptime: process.uptime() });
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -19,7 +24,7 @@ async function startServer() {
     app.use(vite.middlewares);
     
     // Explicit SPA fallback for development to handle deep links
-    app.get('*all', async (req, res, next) => {
+    app.get('(.*)', async (req, res, next) => {
       const url = req.originalUrl;
       try {
         // Read index.html from disk
@@ -36,8 +41,8 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    // SPA fallback for production (Express 5 compatible)
-    app.get('*all', (req, res) => {
+    // SPA fallback for production (Express 5 compatible wildcard)
+    app.get('(.*)', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
