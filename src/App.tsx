@@ -34,6 +34,11 @@ const TRANSLATIONS = {
       payment: "Metodo di pagamento",
       contact: "Contattaci"
     },
+    notFound: {
+      title: "404 - Pagina Non Trovata",
+      message: "Oops! La pagina che stai cercando sembra essere scomparsa nel nulla.",
+      backHome: "Torna alla Home"
+    },
     hero: {
       title: "Comfort Rinnovato",
       subtitle: "Trasforma Ogni Giorno in Pura Magia.",
@@ -208,6 +213,11 @@ const TRANSLATIONS = {
       about: "About Us",
       payment: "Payment Method",
       contact: "Contact Us"
+    },
+    notFound: {
+      title: "404 - Page Not Found",
+      message: "Oops! The page you're looking for seems to have vanished into thin air.",
+      backHome: "Back to Home"
     },
     hero: {
       title: "Renewed Comfort",
@@ -384,6 +394,11 @@ const TRANSLATIONS = {
       payment: "Mode de paiement",
       contact: "Contactez-nous"
     },
+    notFound: {
+      title: "404 - Page Non Trouvée",
+      message: "Oups ! La page que vous recherchez semble avoir disparu dans la nature.",
+      backHome: "Retour à l'accueil"
+    },
     hero: {
       title: "Confort Renouvelé",
       subtitle: "Transformez chaque jour en pure magie.",
@@ -558,6 +573,11 @@ const TRANSLATIONS = {
       about: "Über uns",
       payment: "Zahlungsmethode",
       contact: "Kontakt"
+    },
+    notFound: {
+      title: "404 - Seite nicht gefunden",
+      message: "Hoppla! Die Seite, nach der Sie suchen, scheint wie vom Erdboden verschluckt zu sein.",
+      backHome: "Zurück zur Startseite"
     },
     hero: {
       title: "Erneuerter Komfort",
@@ -1862,6 +1882,55 @@ const Footer = () => {
   );
 };
 
+const NotFound = () => {
+  const { t, lang } = useLanguage();
+  const navigate = useNavigate();
+
+  const getLocalizedPath = (path: string) => {
+    const prefix = lang === 'it' ? '' : lang === 'en' ? '/eng' : `/${lang}`;
+    if (path === '/') return prefix || '/';
+    return `${prefix}${path}`;
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center"
+    >
+      <motion.div
+        initial={{ scale: 0.8, rotate: -10 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 260,
+          damping: 20 
+        }}
+        className="relative mb-8"
+      >
+        <div className="text-[120px] md:text-[180px] font-black text-gray-50 leading-none select-none">404</div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Search className="w-20 h-20 md:w-32 md:32 text-brand-blue opacity-20 animate-pulse" />
+        </div>
+      </motion.div>
+      
+      <h1 className="text-3xl md:text-4xl font-black text-brand-dark uppercase tracking-tighter mb-4">
+        {t.notFound.title}
+      </h1>
+      <p className="text-gray-500 max-w-md mb-10 font-medium">
+        {t.notFound.message}
+      </p>
+      
+      <button 
+        onClick={() => navigate(getLocalizedPath('/'))}
+        className="bg-brand-blue text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-sm shadow-xl shadow-brand-blue/20 hover:scale-105 transition-transform active:scale-95"
+      >
+        {t.notFound.backHome}
+      </button>
+    </motion.div>
+  );
+};
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1964,7 +2033,7 @@ export default function LandingPage() {
         <Route key={p} path={p} element={orderInfo ? <ThankYouPage name={orderInfo.name} total={orderInfo.total} /> : <Navigate to="/" />} />
       ))}
 
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 
