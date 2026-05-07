@@ -1896,59 +1896,88 @@ const NotFound = () => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-[80vh] flex flex-col items-center justify-center px-6 text-center relative overflow-hidden"
+      className="min-h-[85vh] flex flex-col items-center justify-center px-6 text-center relative overflow-hidden bg-white"
     >
-      {/* Decorative background elements */}
-      <div className="absolute top-1/4 -left-10 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 -right-10 w-64 h-64 bg-brand-blue/10 rounded-full blur-3xl animate-pulse delay-700" />
-      
-      <motion.div
-        initial={{ scale: 0.8, rotate: -5, y: 20 }}
-        animate={{ scale: 1, rotate: 0, y: 0 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 260,
-          damping: 20 
+      {/* Dynamic Background Elements */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+          x: [0, 50, 0],
+          y: [0, -50, 0]
         }}
-        className="relative mb-12"
-      >
-        <div className="text-[140px] md:text-[220px] font-black text-gray-50/80 leading-none select-none tracking-tighter">
-          404
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            animate={{ 
-              y: [0, -10, 0],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Search className="w-24 h-24 md:w-36 h-36 text-brand-blue opacity-30" />
-          </motion.div>
-        </div>
-      </motion.div>
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none"
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1.2, 1, 1.2],
+          opacity: [0.4, 0.6, 0.4],
+          x: [0, -70, 0],
+          y: [0, 80, 0]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-1/4 -right-20 w-80 h-80 bg-brand-blue/10 rounded-full blur-[80px] pointer-events-none"
+      />
       
-      <div className="relative z-10">
-        <h1 className="text-4xl md:text-5xl font-black text-brand-dark uppercase tracking-tight mb-4 max-w-xl mx-auto">
-          {t.notFound.title}
-        </h1>
-        <p className="text-gray-500 max-w-md mb-12 font-medium text-lg md:text-xl">
-          {t.notFound.message}
-        </p>
-        
-        <button 
-          onClick={() => navigate(getLocalizedPath('/'))}
-          className="group relative bg-brand-blue text-white px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm shadow-2xl shadow-brand-blue/30 overflow-hidden"
+      <div className="relative z-10 max-w-2xl mx-auto">
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mb-12"
         >
-          <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1 block">
-            {t.notFound.backHome}
-          </span>
-          <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-        </button>
+          <div className="text-[160px] md:text-[240px] font-black text-brand-dark/5 leading-none select-none tracking-tighter italic">
+            404
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              animate={{ 
+                rotate: [0, 10, -10, 0],
+                y: [0, -15, 0]
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Search className="w-24 h-24 md:w-40 md:h-40 text-brand-blue opacity-40 drop-shadow-2xl" />
+            </motion.div>
+          </div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h1 className="text-4xl md:text-6xl font-black text-brand-dark uppercase tracking-tight mb-6">
+            {t.notFound.title}
+          </h1>
+          <p className="text-gray-500 max-w-md mx-auto mb-12 font-medium text-lg md:text-xl leading-relaxed">
+            {t.notFound.message}
+          </p>
+          
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate(getLocalizedPath('/'))}
+            className="group relative inline-flex items-center gap-3 bg-brand-dark text-white px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm shadow-2xl transition-all hover:bg-brand-blue"
+          >
+            <span className="relative z-10">{t.notFound.backHome}</span>
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <ArrowRight className="w-5 h-5 relative z-10" />
+            </motion.div>
+            <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+          </motion.button>
+        </motion.div>
+      </div>
+
+      {/* Subtle Bottom Accent */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 opacity-20 hidden md:flex">
+        <div className="h-px w-20 bg-brand-dark" />
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-dark whitespace-nowrap">Error Captured</span>
+        <div className="h-px w-20 bg-brand-dark" />
       </div>
     </motion.div>
   );

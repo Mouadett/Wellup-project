@@ -23,14 +23,12 @@ async function startServer() {
     });
     app.use(vite.middlewares);
     
-    // Explicit SPA fallback for development to handle deep links
-    app.get('(.*)', async (req, res, next) => {
+    // Explicit SPA fallback for development
+    app.use('*', async (req, res, next) => {
       const url = req.originalUrl;
       try {
-        // Read index.html from disk
         const fs = await import('fs');
         let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-        // Transform index.html through Vite
         template = await vite.transformIndexHtml(url, template);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
       } catch (e) {
@@ -41,7 +39,7 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    // SPA fallback for production (Express 5 compatible wildcard)
+    // SPA fallback for production (Express 5 uses regex for catch-all)
     app.get('(.*)', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
